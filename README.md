@@ -22,3 +22,6 @@ npm run lint
 
 ### Customize configuration
 See [Configuration Reference](https://cli.vuejs.org/config/).
+
+### vuex 
+https://joshua1988.github.io/web-development/vuejs/vuex-getters-mutations/
