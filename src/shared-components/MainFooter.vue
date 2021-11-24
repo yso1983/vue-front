@@ -30,7 +30,7 @@
 
 <script>
   export default {
-    name: 'main-footer',
-    data: () => ({ value: 1 }),
-  }
+    name: "main-footer",
+    data: () => ({ value: 1 })
+  };
 </script>

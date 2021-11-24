@@ -7,7 +7,7 @@
       <!-- Provides the application the proper gutter -->
       <v-container fluid>
         <!-- If using vue-router -->
-        <v-subheader>{{ $store.state.subtitle }}</v-subheader>
+        <v-subheader v-if="$store.state.subtitle">{{ $store.state.subtitle }}</v-subheader>
         <router-view></router-view>
       </v-container>
     </v-main>

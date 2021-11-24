@@ -1,8 +1,9 @@
-import Vue from 'vue';
-import VueRouter from 'vue-router';
+import Vue from "vue";
+import VueRouter from "vue-router";
 import dashbord from "../views/dashbord";
 import chart from "../views/chart";
 import cate from "../views/cate";
+import account from "../views/account";
 //import Page1 from "../components/Page1";
 
 //2.Route 에서 사용 할 Component 정의
@@ -22,9 +23,19 @@ const routes = [
   },
   {
     path: "/Cate",
-    name: "Categori",
+    name: "Cate",
     component: cate,
   },
+  {
+    path: "/Account",
+    name: "Account",
+    component: account,
+  },
+  // {
+  //   path: "/Dnw",
+  //   name: "Deposit&Withdrawal",
+  //   component: dnw,
+  // },
   { path: "*", redirect: "/Home" },
 ];
 

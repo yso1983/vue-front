@@ -1,5 +1,5 @@
 <template>
-  <v-data-table id="cate_list"
+  <v-data-table id="account_list"
     style="width: 100%"
     :headers="headers"
     :items="$store.state.account.accounts"

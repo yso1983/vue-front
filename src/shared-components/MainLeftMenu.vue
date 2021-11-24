@@ -86,8 +86,8 @@ export default {
         },
         {
           icon: "mdi-monitor-edit",
-          text: "Data Usage",
-          pagePath: "./Home"
+          text: "Deposit & Withdrawal",
+          pagePath: "./Dnw"
         },
         {
           icon: "mdi-chart-donut",
