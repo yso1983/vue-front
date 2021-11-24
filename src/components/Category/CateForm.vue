@@ -2,10 +2,10 @@
   <v-card class="mx-auto text-center" dark app>
     <validation-observer ref="observer" v-slot="{ invalid }">
       <form @submit.prevent="submit">
-         <input type="hidden" v-model="$store.state.cate.user_id">
+        <input type="hidden" v-model="$store.state.account.id">
         <validation-provider v-slot="{ errors }" name="select" rules="required">
           <v-select
-            v-model="$store.state.cate.select"
+            v-model="$store.state.account.select"
             :items="users"
             item-text="name"
             item-value="id"
@@ -15,28 +15,41 @@
             required
           ></v-select>
         </validation-provider>
-
         <validation-provider
           v-slot="{ errors }"
           name="항목"
           rules="required|max:25"
         >
           <v-text-field
-            v-model="$store.state.cate.name"
+            v-model="$store.state.account.name"
             :counter="25"
             :error-messages="errors"
             label="항목"
             required
           ></v-text-field>
         </validation-provider>
+        <validation-provider
+          v-slot="{ errors }"
+          name="잔액"
+          rules="required"
+        >
+          <v-text-field
+            v-model="$store.state.account.amount"
+            :error-messages="errors"
+            label="잔액"
+            type="number"
+            min="0"
+            step=".1"
+            required
+          ></v-text-field>
+        </validation-provider>
         <v-textarea
           solo
-          v-model="$store.state.cate.remark"
+          v-model="$store.state.account.remark"
           name="비고"
           :counter="200"
           label="비고"
           outlined
-          required
         ></v-textarea>
 
         <v-btn class="mr-4" type="submit" :disabled="invalid"> submit </v-btn>
@@ -53,7 +66,7 @@ import {
   ValidationProvider,
   setInteractionMode,
 } from "vee-validate";
-import axios from "axios";
+
 
 setInteractionMode("eager");
 
@@ -88,24 +101,49 @@ export default {
     ValidationObserver,
   },
   data: () => ({
-
     users: []
   }),
   methods: {
     submit() {
       this.$refs.observer.validate();
+      let account = this.$store.state.account;
 
+      let params = {
+        id: account.id,
+        name: account.name,
+        user_id: account.select,
+        remark: account.remark??"",
+        amount: account.amount
+      };
+
+      console.log(params);
+
+      this.$axios.put("/api/account", params
+      ) 
+      .then((res) => {
+        if(res){
+          this.clear();
+          //console.log(this.$parent);
+          this.$parent.$children[1].read();
+        }
+        else 
+          alert("실패");
+      })
+      .catch((err) => {
+        alert(err);
+      });
 
     },
     clear() {
-      this.$store.state.cate.id = 0;
-      this.$store.state.cate.name = "";
-      this.$store.state.cate.select = null;
-      this.$store.state.cate.remark = "";
+      this.$store.state.account.id = 0;
+      this.$store.state.account.name = "";
+      this.$store.state.account.amount = 0;
+      this.$store.state.account.select = null;
+      this.$store.state.account.remark = "";
       this.$refs.observer.reset();
     },
     read() {
-      axios.get("/user").then((res) => {
+      this.$axios.get("/api/user").then((res) => {
         if (res.data) this.users = res.data;
       });
     },

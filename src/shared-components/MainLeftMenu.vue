@@ -41,7 +41,8 @@
         <v-list-item
           v-for="(item, i) in items"
           :key="i"
-          :to="{ path : item.pagePath }"
+          :to="{ path : item.pagePath }" 
+          @click="menuActionClick(item.text)"
         >
           <v-list-item-icon>
             <v-icon v-text="item.icon"></v-icon>
@@ -60,38 +61,49 @@
  
 <script>
 export default {
-  name: 'main-leftmenu',
+  name: "main-leftmenu",
   data: () => ({
       items: [
         {
-          icon: 'mdi-home',
-          text: 'Home',
-          pagePath: './Home'
+          icon: "mdi-home",
+          text: "Home",
+          pagePath: "./Home"
         },
         {
-          icon: 'mdi-inbox',
-          text: 'Chart',
-          pagePath: './Chart'
+          icon: "mdi-inbox",
+          text: "Chart",
+          pagePath: "./Chart"
         },
         {
-          icon: 'mdi-table-cog',
-          text: 'Items',
-          pagePath: './Cate'
+          icon: "mdi-table-cog",
+          text: "Account",
+          pagePath: "./Account"
         },
         {
-          icon: 'mdi-monitor-edit',
-          text: 'Data Usage',
-          pagePath: './Home'
+          icon: "mdi-table-cog",
+          text: "Items",
+          pagePath: "./Cate"
         },
         {
-          icon: 'mdi-chart-donut',
-          text: 'Data Usage',
-          pagePath: './Home'
+          icon: "mdi-monitor-edit",
+          text: "Data Usage",
+          pagePath: "./Home"
+        },
+        {
+          icon: "mdi-chart-donut",
+          text: "Data Usage",
+          pagePath: "./Home"
         },
       ],
       model: 0,
     }),
-}
+    methods: {
+      menuActionClick(text) {
+        this.$store.state.subtitle = text;
+        //this.$store.commit("CHANGE_SUBTITLE", text);
+      }
+    }
+};
 </script>
  
 <style scoped>

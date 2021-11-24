@@ -7,6 +7,7 @@
       <!-- Provides the application the proper gutter -->
       <v-container fluid>
         <!-- If using vue-router -->
+        <v-subheader>{{ $store.state.subtitle }}</v-subheader>
         <router-view></router-view>
       </v-container>
     </v-main>
@@ -33,7 +34,6 @@ export default {
     "main-header": MainHeader,
     "main-footer": MainFooter,
     "main-leftmenu": MainLeftMenu,
-  },
-  //data: () => ({ drawer: null }),
+  }
 };
 </script>

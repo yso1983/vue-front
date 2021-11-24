@@ -4,8 +4,17 @@ module.exports = {
     'vuetify'
   ],
   devServer: {
+    host: 'localhost',
+    proxy: {
+      '/api': {
+        target: 'http://localhost:3000',
+        changeOrigin: true,
+        pathRewrite: {
+            '^/api': ''
+        }
+      }
+    },
     //proxy: 'http://yso1983.gq',
-    proxy: 'http://localhost:3000',
     disableHostCheck: true
   }
 }

@@ -1,8 +1,8 @@
 <template>
-  <v-data-table
+  <v-data-table id="account_list"
     style="width: 100%"
     :headers="headers"
-    :items="desserts"
+    :items="$store.state.account.accounts"
     :items-per-page="10"
 		item-key="id"
     class="elevation-1 ml-3 mr-3"
@@ -15,41 +15,37 @@ export default {
   data: () => ({
     headers: [
       {
-        text: "account name",
+        text: "owner",
         align: "start",
         sortable: false,
-        value: "account_name",
+        value: "user_name",
       },
-      { text: "owner", value: "user_name" },
-      { text: "remark", value: "remark" },
-    ],
-    desserts: [
-      {
-				id: 1,
-        account_name: "국민은행(생활비)",
-        user_id: 1,
-        user_name: '용수',
-				remark: '',
-      },
-      {
-				id: 2,
-        account_name: "국민은행",
-        user_id: 2,
-        user_name: '봉화',
-				remark: '123',
-      },
-    ],
+      { text: "항목", value: "name" },
+      { text: "비고", value: "remark" },
+      { text: "잔액", value: "amount" },
+    ]
   }),
 	methods: {
     handleClick(value) {
-			let cate = {
+			let account = {
 					id: value.id,
-					name: value.account_name,
+					name: value.name,
 					select: value.user_id,
-					remark: value.remark
+					remark: value.remark,
+					amount: value.amount
 				};
-			this.$store.commit("CHANGE_CATE", cate);
+			this.$store.commit("CHANGE_ACCOUNT", account);
     },
+    read() {
+      this.$axios.get("/api/account").then((res) => {
+        if (res.data) {
+          this.$store.commit("CHANGE_ACCOUNT_LIST", res.data);
+        }
+      });
+    },
+  },
+  created() {
+    this.read();
   },
 };
 </script>
