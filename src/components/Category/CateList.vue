@@ -7,7 +7,11 @@
 		item-key="id"
     class="elevation-1 ml-3 mr-3"
 		@click:row="handleClick"
-  ></v-data-table>
+  >
+    <template v-slot:item.amount="{ item }">
+      <span>{{ item.amount | makeComma }}</span>
+    </template>
+  </v-data-table>
 </template>
 
 <script>
