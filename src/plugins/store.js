@@ -17,6 +17,7 @@ export const store = new Vuex.Store({
     },
     subtitle: ""
   },
+  getters: {},
   mutations: {
     CHANGE_ACCOUNT(state, account){
       state.account.id = account.id;
@@ -30,6 +31,17 @@ export const store = new Vuex.Store({
     },
     CHANGE_SUBTITLE(state, subtitle){
       state.subtitle = subtitle;
+    }
+  },
+  actions: {
+    CHANGE_ACCOUNT ({commit}, account) {
+      commit('CHANGE_ACCOUNT', account);
+    },
+    CHANGE_ACCOUNT_LIST({commit}, accounts){
+       commit('CHANGE_ACCOUNT_LIST', accounts);
+    },
+    CHANGE_SUBTITLE({commit}, subtitle){
+       commit('CHANGE_SUBTITLE', subtitle);
     }
   }
 });

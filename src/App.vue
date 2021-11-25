@@ -1,17 +1,19 @@
 <template>
-  <v-app id="inspire">
-    <main-leftmenu />
-    <main-header />
+  <v-app id="app">
+    <main-leftmenu v-if="!$route.path.includes('login')" />
+    <main-header v-if="!$route.path.includes('login')" />
     <!-- Sizes your content based upon application components -->
     <v-main>
       <!-- Provides the application the proper gutter -->
       <v-container fluid>
-        <!-- If using vue-router -->
-        <v-subheader v-if="$store.state.subtitle">{{ $store.state.subtitle }}</v-subheader>
-        <router-view></router-view>
+        <keep-alive :include="['Login']">
+          <!-- If using vue-router -->
+          <v-subheader v-if="$store.state.subtitle">{{ $store.state.subtitle }}</v-subheader>
+          <router-view></router-view>
+        </keep-alive>
       </v-container>
     </v-main>
-    <main-footer />
+    <main-footer v-if="!$route.path.includes('login')" />
   </v-app>
 </template>
 

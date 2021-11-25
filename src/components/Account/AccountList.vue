@@ -38,12 +38,12 @@ export default {
 					remark: value.remark,
 					amount: value.amount
 				};
-			this.$store.commit("CHANGE_ACCOUNT", account);
+			this.$store.dispatch('CHANGE_ACCOUNT', account);
     },
     read() {
       this.$axios.get("/api/account").then((res) => {
         if (res.data) {
-          this.$store.commit("CHANGE_ACCOUNT_LIST", res.data);
+          this.$store.dispatch("CHANGE_ACCOUNT_LIST", res.data);
         }
       });
     },
