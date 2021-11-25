@@ -118,9 +118,9 @@ export default {
 
       console.log(params);
 
-      this.$axios.put("/api/account", params
-      ) 
+      this.$axios.put("/api/account", params) 
       .then((res) => {
+        console.log(res);
         if(res){
           this.clear();
           //console.log(this.$parent);
@@ -144,7 +144,7 @@ export default {
     },
     read() {
       this.$axios.get("/api/user").then((res) => {
-        if (res.data) this.users = res.data;
+        if (res.data & res.data.code === "0000") this.users = res.data.data;
       });
     },
   },

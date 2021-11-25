@@ -31,6 +31,24 @@ export default {
       ],
     };
   },
+  // created() {
+  //   this.$axios.get("/api/auth/signin").then((res) => {
+  //     const user = res.data.data;
+
+  //     console.log(user);
+  //     if (user) {
+  //       this.$store.dispatch("SET_USER", user);
+  //     } 
+  //     else{
+  //       this.$router.push({
+  //         name: "LoginPage"
+  //       });
+  //     }
+
+  //   }).catch((err) => {
+  //     console.error(err);
+  //   });
+  // },
 };
 </script>
 

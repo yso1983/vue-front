@@ -42,8 +42,8 @@ export default {
     },
     read() {
       this.$axios.get("/api/account").then((res) => {
-        if (res.data) {
-          this.$store.dispatch("CHANGE_ACCOUNT_LIST", res.data);
+        if (res.data && res.data.code === "0000") {
+          this.$store.dispatch("CHANGE_ACCOUNT_LIST", res.data.data);
         }
       });
     },

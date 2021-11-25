@@ -1,7 +1,7 @@
 <template>
   <v-app id="app">
-    <main-leftmenu v-if="!$route.path.includes('login')" />
-    <main-header v-if="!$route.path.includes('login')" />
+    <main-leftmenu v-if="user" />
+    <main-header v-if="user" />
     <!-- Sizes your content based upon application components -->
     <v-main>
       <!-- Provides the application the proper gutter -->
@@ -13,7 +13,7 @@
         </keep-alive>
       </v-container>
     </v-main>
-    <main-footer v-if="!$route.path.includes('login')" />
+    <main-footer v-if="user" />
   </v-app>
 </template>
 
@@ -36,6 +36,9 @@ export default {
     "main-header": MainHeader,
     "main-footer": MainFooter,
     "main-leftmenu": MainLeftMenu,
-  }
+  }, 
+  computed: {
+    user(){ return this.$store.getters.user; }
+  },
 };
 </script>

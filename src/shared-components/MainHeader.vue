@@ -37,7 +37,14 @@
  
 <script>
 export default {
-  name: "main-header"
+  name: "main-header",
+  created(){
+    if(!this.$route.path.includes('login') &&  this.$store.getters.user == null){
+      this.$router.push({
+        name: "LoginPage"
+      });
+    }
+  }
 };
 </script>
  

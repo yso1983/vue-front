@@ -13,8 +13,9 @@ Vue.use(VueRouter);
 //3. Route 를 정의 합니다.
 const routes = [
   {
-      path: "/login",
-      component: login,
+    path: "/login",
+    name: "LoginPage",
+    component: login,
   },
   {
     path: "/home",

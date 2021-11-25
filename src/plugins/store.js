@@ -7,6 +7,7 @@ Vue.use(Vuex);
 export const store = new Vuex.Store({
   state: {
     drawer: false,
+    user: null, 
     account: {
       id: 0,
       name: "",
@@ -17,7 +18,9 @@ export const store = new Vuex.Store({
     },
     subtitle: ""
   },
-  getters: {},
+  getters: {
+    user:(state) => {return state.user;}
+  },
   mutations: {
     CHANGE_ACCOUNT(state, account){
       state.account.id = account.id;
@@ -31,6 +34,9 @@ export const store = new Vuex.Store({
     },
     CHANGE_SUBTITLE(state, subtitle){
       state.subtitle = subtitle;
+    },
+    SET_USER(state, user){ 
+      state.user = user;
     }
   },
   actions: {
@@ -42,6 +48,9 @@ export const store = new Vuex.Store({
     },
     CHANGE_SUBTITLE({commit}, subtitle){
        commit('CHANGE_SUBTITLE', subtitle);
+    },
+    SET_USER({commit}, user){
+       commit('SET_USER', user);
     }
   }
 });
