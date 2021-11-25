@@ -6,11 +6,8 @@
     <v-main>
       <!-- Provides the application the proper gutter -->
       <v-container fluid>
-        <keep-alive :include="['Login']">
-          <!-- If using vue-router -->
-          <v-subheader v-if="$store.state.subtitle">{{ $store.state.subtitle }}</v-subheader>
-          <router-view></router-view>
-        </keep-alive>
+        <!-- If using vue-router -->
+        <router-view></router-view>
       </v-container>
     </v-main>
     <main-footer v-if="user" />
@@ -36,9 +33,31 @@ export default {
     "main-header": MainHeader,
     "main-footer": MainFooter,
     "main-leftmenu": MainLeftMenu,
-  }, 
+  },
   computed: {
-    user(){ return this.$store.getters.user; }
+    user() {
+      return this.$store.getters.user;
+    },
+  },
+  created() {
+    //&&  this.$store.getters.user == null
+    if (!this.$route.path.includes("login")) {
+      this.$axios
+        .get("/api/auth/signin")
+        .then((res) => {
+          const user = res.data.data;
+          if (user) {
+            this.$store.dispatch("SET_USER", user);
+          } else {
+            this.$router.push({
+              name: "LoginPage",
+            });
+          }
+        })
+        .catch((err) => {
+          console.error(err);
+        });
+    }
   },
 };
 </script>

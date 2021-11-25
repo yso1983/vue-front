@@ -1,12 +1,14 @@
 <template>
-  <v-data-table id="account_list"
+  <v-data-table
+    id="account_list"
     style="width: 100%"
     :headers="headers"
     :items="$store.state.account.accounts"
     :items-per-page="10"
-		item-key="id"
+    item-key="id"
+    :loading="loading"
     class="elevation-1 ml-3 mr-3"
-		@click:row="handleClick"
+    @click:row="handleClick"
   >
     <template v-slot:item.amount="{ item }">
       <span>{{ item.amount | makeComma }}</span>
@@ -17,6 +19,7 @@
 <script>
 export default {
   data: () => ({
+    loading: true,
     headers: [
       {
         text: "owner",
@@ -27,22 +30,24 @@ export default {
       { text: "항목", value: "name" },
       { text: "비고", value: "remark" },
       { text: "잔액", value: "amount" },
-    ]
+    ],
   }),
-	methods: {
+  methods: {
     handleClick(value) {
-			let account = {
-					id: value.id,
-					name: value.name,
-					select: value.user_id,
-					remark: value.remark,
-					amount: value.amount
-				};
-			this.$store.dispatch('CHANGE_ACCOUNT', account);
+      let account = {
+        id: value.id,
+        name: value.name,
+        select: value.user_id,
+        remark: value.remark,
+        amount: value.amount,
+      };
+      this.$store.dispatch("CHANGE_ACCOUNT", account);
     },
     read() {
+      this.loading = true;
       this.$axios.get("/api/account").then((res) => {
         if (res.data && res.data.code === "0000") {
+          this.loading = false;
           this.$store.dispatch("CHANGE_ACCOUNT_LIST", res.data.data);
         }
       });

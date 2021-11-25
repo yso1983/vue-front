@@ -1,11 +1,11 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
-import dashbord from "../views/dashbord";
-import chart from "../views/chart";
-import cate from "../views/cate";
-import account from "../views/account";
-import login from "../views/login";
-//import Page1 from "../components/Page1";
+import Dashbord from "../views/Dashbord";
+import Chart from "../views/Chart";
+import Cate from "../views/Cate";
+import Account from "../views/Account";
+import Login from "../views/Login";
+import Dnw from "../views/Dnw";
 
 //2.Route 에서 사용 할 Component 정의
 Vue.use(VueRouter);
@@ -15,33 +15,33 @@ const routes = [
   {
     path: "/login",
     name: "LoginPage",
-    component: login,
+    component: Login,
   },
   {
     path: "/home",
     name: "Home",
-    component: dashbord,
+    component: Dashbord,
   },
   {
     path: "/chart",
     name: "Chart",
-    component: chart,
+    component: Chart,
   },
   {
     path: "/cate",
     name: "Cate",
-    component: cate,
+    component: Cate,
   },
   {
     path: "/account",
     name: "Account",
-    component: account,
+    component: Account,
   },
-  // {
-  //   path: "/Dnw",
-  //   name: "Deposit&Withdrawal",
-  //   component: dnw,
-  // },
+  {
+    path: "/dnw",
+    name: "Deposit&Withdrawal",
+    component: Dnw,
+  },
   { path: "*", redirect: "/Home" },
 ];
 

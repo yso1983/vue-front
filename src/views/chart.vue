@@ -13,8 +13,9 @@
 				style="width: 100%"
 				:headers="headers"
 				:items="desserts"
-				:items-per-page="10"
+				:items-per-page="15"
 				class="elevation-1 ml-3 mr-3"
+				hide-default-footer
 			></v-data-table>
 		</v-row>
   </div>
@@ -42,7 +43,7 @@ export default {
 				{ text: "Fat (g)", value: "fat" },
 				{ text: "Carbs (g)", value: "carbs" },
 				{ text: "Protein (g)", value: "protein" },
-				{ text: "Iron (%)", value: "iron" },
+				{ text: "Iron (%)", value: "iron"},
 			],
 			desserts: [
 				{

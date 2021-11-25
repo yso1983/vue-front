@@ -144,7 +144,7 @@ export default {
     },
     read() {
       this.$axios.get("/api/user").then((res) => {
-        if (res.data & res.data.code === "0000") this.users = res.data.data;
+        if (res.data && res.data.code === "0000") this.users = res.data.data;
       });
     },
   },
