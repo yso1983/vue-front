@@ -3,7 +3,7 @@
     id="account_list"
     style="width: 100%"
     :headers="headers"
-    :items="$store.state.account.accounts"
+    :items="accounts"
     :items-per-page="10"
     item-key="id"
     :loading="loading"
@@ -17,6 +17,9 @@
 </template>
 
 <script>
+import AccountService from "../../services/account.service";
+import Account from "../../models/account";
+
 export default {
   data: () => ({
     loading: true,
@@ -32,23 +35,24 @@ export default {
       { text: "잔액", value: "amount" },
     ],
   }),
+  computed: {
+    accounts() {
+      //console.log(this.$store.state.auth.status.loggedIn);
+      return this.$store.state.global.accounts;
+    },
+  },
   methods: {
     handleClick(value) {
-      let account = {
-        id: value.id,
-        name: value.name,
-        select: value.user_id,
-        remark: value.remark,
-        amount: value.amount,
-      };
-      this.$store.dispatch("CHANGE_ACCOUNT", account);
+      this.$store.dispatch("global/CHANGE_ACCOUNT", new Account(value.id, value.user_id, value.name
+      , value.amount, value.remark));
     },
     read() {
       this.loading = true;
-      this.$axios.get("/api/account").then((res) => {
+      AccountService.getAaccounts().then((res) => {
+
         if (res.data && res.data.code === "0000") {
           this.loading = false;
-          this.$store.dispatch("CHANGE_ACCOUNT_LIST", res.data.data);
+          this.$store.dispatch("global/CHANGE_ACCOUNT_LIST", res.data.data);
         }
       });
     },

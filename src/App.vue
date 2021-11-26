@@ -42,7 +42,7 @@ export default {
   },
   mounted() {
     if (!this.currentUser) {
-      this.$router.push('/LoginPage');
+      this.$router.push({name: "LoginPage"});
     }
   }
 };

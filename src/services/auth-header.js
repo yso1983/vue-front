@@ -1,24 +1,11 @@
-import axios from 'axios';
-import authHeader from './auth-header';
+export default function authHeader() {
+  let user = JSON.parse(localStorage.getItem('user'));
 
-const API_URL = '/api/test/';
-
-class UserService {
-  getPublicContent() {
-    return axios.get(API_URL + 'all');
-  }
-
-  getUserBoard() {
-    return axios.get(API_URL + 'user', { headers: authHeader() });
-  }
-
-  getModeratorBoard() {
-    return axios.get(API_URL + 'mod', { headers: authHeader() });
-  }
-
-  getAdminBoard() {
-    return axios.get(API_URL + 'admin', { headers: authHeader() });
+  if (user && user.accessToken) {
+    // for Node.js Express back-end
+    return { 'x-access-token': user.accessToken };
+    //return { Authorization: 'Bearer ' + user.accessToken };
+  } else {
+    return {};
   }
 }
-
-export default new UserService();

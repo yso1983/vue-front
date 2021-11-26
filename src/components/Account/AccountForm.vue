@@ -2,10 +2,10 @@
   <v-card class="mx-auto text-center" dark app>
     <validation-observer ref="observer" v-slot="{ invalid }">
       <form @submit.prevent="submit">
-        <input type="hidden" v-model="$store.state.account.id">
+        <input type="hidden" v-model="account.id">
         <validation-provider v-slot="{ errors }" name="select" rules="required">
           <v-select
-            v-model="$store.state.account.select"
+            v-model="account.user_id"
             :items="users"
             item-text="name"
             item-value="id"
@@ -21,7 +21,7 @@
           rules="required|max:25"
         >
           <v-text-field
-            v-model="$store.state.account.name"
+            v-model="account.name"
             :counter="25"
             :error-messages="errors"
             label="항목"
@@ -34,7 +34,7 @@
           rules="required"
         >
           <v-text-field
-            v-model="$store.state.account.amount"
+            v-model="account.amount"
             :error-messages="errors"
             label="잔액"
             type="number"
@@ -45,7 +45,7 @@
         </validation-provider>
         <v-textarea
           solo
-          v-model="$store.state.account.remark"
+          v-model="account.remark"
           name="비고"
           :counter="200"
           label="비고"
@@ -66,6 +66,9 @@ import {
   ValidationProvider,
   setInteractionMode,
 } from "vee-validate";
+import AccountService from '../../services/account.service';
+import UserService from '../../services/user.service';
+import Account from "../../models/account";
 
 
 setInteractionMode("eager");
@@ -101,29 +104,23 @@ export default {
     ValidationObserver,
   },
   data: () => ({
-    users: []
+    users: [], 
+    //account: null
   }),
+  computed: {
+    account() {
+      return this.$store.state.global.account;
+    },
+  },
   methods: {
     submit() {
       this.$refs.observer.validate();
-      let account = this.$store.state.global.account;
-
-      let params = {
-        id: account.id,
-        name: account.name,
-        user_id: account.select,
-        remark: account.remark??"",
-        amount: account.amount
-      };
-
-      console.log(params);
-
-      this.$axios.put("/api/account", params) 
+      AccountService.setAaccount(new Account(this.account.id, this.account.user_id, this.account.name
+      , this.account.amount, this.account.remark)) 
       .then((res) => {
         console.log(res);
         if(res){
           this.clear();
-          //console.log(this.$parent);
           this.$parent.$children[1].read();
         }
         else 
@@ -135,20 +132,17 @@ export default {
 
     },
     clear() {
-      this.$store.state.global.account.id = 0;
-      this.$store.state.global.account.name = "";
-      this.$store.state.global.account.amount = 0;
-      this.$store.state.global.account.select = null;
-      this.$store.state.global.account.remark = "";
+      this.$store.dispatch("global/CHANGE_ACCOUNT",new Account(0, 0, "", 0, ""));
       this.$refs.observer.reset();
     },
     read() {
-      this.$axios.get("/api/user").then((res) => {
+      UserService.getUsers().then((res) => {
         if (res.data && res.data.code === "0000") this.users = res.data.data;
       });
     },
   },
   created() {
+    //this.account  = this.$store.state.global.account;
     this.read();
   },
 };

@@ -23,6 +23,11 @@ const routes = [
     component: Dashbord,
   },
   {
+    path: "/",
+    name: "Home",
+    component: Dashbord,
+  },
+  {
     path: "/chart",
     name: "Chart",
     component: Chart,
@@ -48,6 +53,20 @@ const routes = [
 //4. 정의한 routes로 Router instance를 생성 합니다.
 let router = new VueRouter({
   routes,
+});
+
+router.beforeEach((to, from, next) => {
+  const publicPages = ['/login', '/register', '/home'];
+  const authRequired = !publicPages.includes(to.path);
+  const loggedIn = localStorage.getItem('user');
+
+  // trying to access a restricted page + not logged in
+  // redirect to login page
+  if (authRequired && !loggedIn) {
+    next('/login');
+  } else {
+    next();
+  }
 });
 
 export default router;

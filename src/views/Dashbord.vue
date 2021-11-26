@@ -1,8 +1,6 @@
 <template>
   <div id="dashbord">
-    <v-carousel 
-		cycle
-		:show-arrows="true">
+    <v-carousel cycle :show-arrows="true">
       <v-carousel-item
         v-for="(item, i) in items"
         :key="i"
@@ -31,6 +29,17 @@ export default {
       ],
     };
   },
+  computed: {
+    currentUser() {
+      //console.log(this.$store.state.auth.user);
+      return this.$store.state.auth.user;
+    },
+  },
+  mounted() {
+    if (!this.currentUser) {
+      this.$router.push({name: "LoginPage"});
+    }
+  }
   // created() {
   //   this.$axios.get("/api/auth/signin").then((res) => {
   //     const user = res.data.data;
@@ -38,7 +47,7 @@ export default {
   //     console.log(user);
   //     if (user) {
   //       this.$store.dispatch("SET_USER", user);
-  //     } 
+  //     }
   //     else{
   //       this.$router.push({
   //         name: "LoginPage"

@@ -40,7 +40,7 @@
 </template>
 
 <script>
-import User from '../models/user';
+import User from "../models/user";
 
 export default {
   name: "Login",
@@ -49,30 +49,31 @@ export default {
   },
   data() {
     return {
-      user: new User('', ''),
+      user: new User("", ""),
       loading: false,
-      message: ''
+      message: "",
     };
   },
   computed: {
     loggedIn() {
-      console.log(this.$store.state.auth.status.loggedIn);
+      //console.log(this.$store.state.auth.status.loggedIn);
       return this.$store.state.auth.status.loggedIn;
-    }
+    },
   },
   created() {
     if (this.loggedIn) {
-      this.$router.push('/profile');
+      this.$router.push({name:"/Home"});
     }
   },
-  methods:{
+  methods: {
     handleLogin() {
       if (this.user.username && this.user.password) {
-        this.$store.dispatch('auth/login', this.user).then(
+        this.$store.dispatch("auth/login", this.user)
+        .then(
           () => {
-            this.$router.push('/Home');
+            this.$router.push({name:"/Home"});
           },
-          error => {
+          (error) => {
             this.loading = false;
             this.message =
               (error.response && error.response.data) ||
@@ -81,7 +82,7 @@ export default {
           }
         );
       }
-    }
+    },
     // onSubmit(){
     //   const id = this.id;
     //   const password = this.password;
@@ -104,7 +105,7 @@ export default {
     //       alert(err);
     //     });
     // }
-  }
+  },
 };
 </script>
 
