@@ -1,7 +1,7 @@
 <template>
   <v-app id="app">
-    <main-leftmenu v-if="user" />
-    <main-header v-if="user" />
+    <main-leftmenu v-if="currentUser" />
+    <main-header v-if="currentUser" />
     <!-- Sizes your content based upon application components -->
     <v-main>
       <!-- Provides the application the proper gutter -->
@@ -10,7 +10,7 @@
         <router-view></router-view>
       </v-container>
     </v-main>
-    <main-footer v-if="user" />
+    <main-footer v-if="currentUser" />
   </v-app>
 </template>
 
@@ -35,29 +35,15 @@ export default {
     "main-leftmenu": MainLeftMenu,
   },
   computed: {
-    user() {
-      return this.$store.getters.user;
+    currentUser() {
+      //console.log(this.$store.state.auth.user);
+      return this.$store.state.auth.user;
     },
   },
-  created() {
-    //&&  this.$store.getters.user == null
-    if (!this.$route.path.includes("login")) {
-      this.$axios
-        .get("/api/auth/signin")
-        .then((res) => {
-          const user = res.data.data;
-          if (user) {
-            this.$store.dispatch("SET_USER", user);
-          } else {
-            this.$router.push({
-              name: "LoginPage",
-            });
-          }
-        })
-        .catch((err) => {
-          console.error(err);
-        });
+  mounted() {
+    if (!this.currentUser) {
+      this.$router.push('/LoginPage');
     }
-  },
+  }
 };
 </script>

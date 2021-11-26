@@ -106,7 +106,7 @@ export default {
   methods: {
     submit() {
       this.$refs.observer.validate();
-      let account = this.$store.state.account;
+      let account = this.$store.state.global.account;
 
       let params = {
         id: account.id,
@@ -135,11 +135,11 @@ export default {
 
     },
     clear() {
-      this.$store.state.account.id = 0;
-      this.$store.state.account.name = "";
-      this.$store.state.account.amount = 0;
-      this.$store.state.account.select = null;
-      this.$store.state.account.remark = "";
+      this.$store.state.global.account.id = 0;
+      this.$store.state.global.account.name = "";
+      this.$store.state.global.account.amount = 0;
+      this.$store.state.global.account.select = null;
+      this.$store.state.global.account.remark = "";
       this.$refs.observer.reset();
     },
     read() {

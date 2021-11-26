@@ -1,9 +1,9 @@
 <template>
   <v-app-bar app>
     <v-app-bar-nav-icon
-      @click="$store.state.drawer = !$store.state.drawer"
+      @click="$store.state.global.drawer = !$store.state.global.drawer"
     ></v-app-bar-nav-icon>
-    <v-toolbar-title>{{ $store.state.subtitle }}</v-toolbar-title>
+    <v-toolbar-title>{{ $store.state.global.subtitle }}</v-toolbar-title>
     <v-spacer></v-spacer>
 
     <!-- <v-btn icon>

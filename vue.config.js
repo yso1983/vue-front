@@ -8,7 +8,7 @@ module.exports = {
     proxy: {
       '/api': {
         //target: 'http://localhost:3000',
-        target: 'http://yso1983.gq',
+        target: 'http://yso1983.gq/api',
         changeOrigin: true,
         pathRewrite: {
             '^/api': ''

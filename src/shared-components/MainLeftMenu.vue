@@ -1,9 +1,9 @@
 <template>
-  <v-navigation-drawer v-model="$store.state.drawer" app>
+  <v-navigation-drawer v-model="$store.state.global.drawer" app>
     <!--  color="grey lighten-4" -->
     <v-sheet color="grey" class="pa-4">
       <v-avatar class="mb-4" color="grey darken-1" size="64"></v-avatar>
-      <div>Hi {{ user.name }}</div>
+      <div>Hi {{ currentUser.name }}</div>
     </v-sheet>
     <v-divider></v-divider>
 
@@ -79,13 +79,13 @@ export default {
     model: 0,
   }),
   computed: {
-    user() {
-      return this.$store.getters.user;
-    },
+    currentUser() {
+      return this.$store.state.auth.user;
+    }
   },
   methods: {
     menuActionClick(text) {
-      this.$store.state.subtitle = text;
+      this.$store.state.global.subtitle = text;
       //this.$store.commit("CHANGE_SUBTITLE", text);
     },
   },

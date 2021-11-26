@@ -15,7 +15,7 @@
                     name="login"
                     label="Login"
                     type="text"
-                    v-model="id"
+                    v-model="user.username"
                   ></v-text-field>
                   <v-text-field
                     id="password"
@@ -23,13 +23,13 @@
                     name="password"
                     label="Password"
                     type="password"
-                    v-model="password"
+                    v-model="user.password"
                   ></v-text-field>
                 </v-form>
               </v-card-text>
               <v-card-actions>
                 <v-spacer></v-spacer>
-                <v-btn @click="onSubmit()">Login</v-btn>
+                <v-btn @click="handleLogin()">Login</v-btn>
               </v-card-actions>
             </v-card>
           </v-flex>
@@ -40,6 +40,8 @@
 </template>
 
 <script>
+import User from '../models/user';
+
 export default {
   name: "Login",
   props: {
@@ -47,31 +49,61 @@ export default {
   },
   data() {
     return {
-      id: '',
-      password: '',
+      user: new User('', ''),
+      loading: false,
+      message: ''
     };
   },
-  methods:{
-    onSubmit(){
-      const id = this.id;
-      const password = this.password;
-      this.$axios
-        .post("/api/auth/signin", {id, password}, {})
-        .then((res) => {
-          const user = res.data.data;
-          if (user) {
-            this.$store.dispatch("SET_USER", user);
-            this.$router.push({
-              name: "Home",
-            });
-          } else {
-            alert(res.data.msg);
-          }
-        })
-        .catch((err) => {
-          alert(err);
-        });
+  computed: {
+    loggedIn() {
+      console.log(this.$store.state.auth.status.loggedIn);
+      return this.$store.state.auth.status.loggedIn;
     }
+  },
+  created() {
+    if (this.loggedIn) {
+      this.$router.push('/profile');
+    }
+  },
+  methods:{
+    handleLogin() {
+      if (this.user.username && this.user.password) {
+        this.$store.dispatch('auth/login', this.user).then(
+          () => {
+            this.$router.push('/Home');
+          },
+          error => {
+            this.loading = false;
+            this.message =
+              (error.response && error.response.data) ||
+              error.message ||
+              error.toString();
+          }
+        );
+      }
+    }
+    // onSubmit(){
+    //   const id = this.id;
+    //   const password = this.password;
+    //   this.$axios
+    //     .post("/api/auth/signin", {
+    //       username: id,
+    //       password: password
+    //     })
+    //     .then((res) => {
+
+    //       if (res.data.accessToken) {
+    //         this.$store.dispatch("SET_USER", res.data);
+    //         this.$router.push({
+    //           name: "Home",
+    //         });
+    //         //localStorage.setItem('user', JSON.stringify(res.data));
+    //       }
+    //     })
+    //     .catch((err) => {
+    //       alert(err);
+    //     });
+    // }
   }
 };
 </script>
