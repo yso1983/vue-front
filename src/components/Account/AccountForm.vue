@@ -1,7 +1,7 @@
 <template>
   <v-card class="mx-auto text-center" dark app>
     <validation-observer ref="observer" v-slot="{ invalid }">
-      <form @submit.prevent="submit">
+      <form @submit.prevent="submit(false)">
         <input type="hidden" v-model="account.id">
         <validation-provider v-slot="{ errors }" name="select" rules="required">
           <v-select
@@ -69,6 +69,7 @@ import {
 import AccountService from '../../services/account.service';
 import UserService from '../../services/user.service';
 import Account from "../../models/account";
+import AuthService from '../../services/auth.service';
 
 
 setInteractionMode("eager");
@@ -113,23 +114,33 @@ export default {
     },
   },
   methods: {
-    submit() {
+    submit(isReTry) {
       this.$refs.observer.validate();
       AccountService.setAaccount(new Account(this.account.id, this.account.user_id, this.account.name
       , this.account.amount, this.account.remark)) 
       .then((res) => {
-        console.log(res);
         if(res){
-          this.clear();
-          this.$parent.$children[1].read();
+          console.log(res);
+          if(res.data.code === "0000")
+          {
+            this.clear();
+            this.$parent.$children[1].read();
+          }
+          else if (res.data.code === "3100"){
+            if(!isReTry){
+              AuthService.refresh().then(rst => this.submit(true)).catch(e => alert(e.message));
+            }
+            else{
+              alert(res.data.message);
+            }
+          }
         }
         else 
           alert("실패");
       })
       .catch((err) => {
-        alert(err);
+        alert(err.message);
       });
-
     },
     clear() {
       this.$store.dispatch("global/CHANGE_ACCOUNT",new Account(0, 0, "", 0, ""));

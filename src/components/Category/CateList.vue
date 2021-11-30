@@ -8,7 +8,7 @@
     class="elevation-1 ml-3 mr-3"
 		@click:row="handleClick"
   >
-    <template v-slot:item.amount="{ item }">
+    <template v-slot:="{ item }">
       <span>{{ item.amount | makeComma }}</span>
     </template>
   </v-data-table>

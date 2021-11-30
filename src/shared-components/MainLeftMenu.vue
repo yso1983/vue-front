@@ -48,22 +48,22 @@ export default {
       {
         icon: "mdi-home",
         text: "Home",
-        pagePath: "./Home",
+        pagePath: "./home",
       },
       {
         icon: "mdi-inbox",
         text: "Chart",
-        pagePath: "./Chart",
+        pagePath: "./chart",
       },
       {
         icon: "mdi-table-cog",
         text: "Account",
-        pagePath: "./Account",
+        pagePath: "./account",
       },
       {
         icon: "mdi-monitor-edit",
         text: "Deposit & Withdrawal",
-        pagePath: "./Dnw",
+        pagePath: "./dnw",
       },
       // {
       //   icon: "mdi-table-cog",

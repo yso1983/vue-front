@@ -23,11 +23,6 @@ const routes = [
     component: Dashbord,
   },
   {
-    path: "/",
-    name: "Home",
-    component: Dashbord,
-  },
-  {
     path: "/chart",
     name: "Chart",
     component: Chart,

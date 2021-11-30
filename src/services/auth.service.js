@@ -1,4 +1,5 @@
 import axios from 'axios';
+import authHeader from './auth-header';
 
 const API_URL = '/api/auth/';
 
@@ -6,7 +7,7 @@ class AuthService {
   login(user) {
     return axios
       .post(API_URL + 'signin', {
-        username: user.username,
+        email: user.email,
         password: user.password
       })
       .then(response => {
@@ -29,6 +30,10 @@ class AuthService {
       email: user.email,
       password: user.password
     });
+  }
+
+  refresh() {
+    return axios.post(API_URL + 'refresh', { headers: authHeader(true) });
   }
 }
 

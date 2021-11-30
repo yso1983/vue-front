@@ -1,10 +1,18 @@
-export default function authHeader() {
+export default function authHeader(refresh) {
   let user = JSON.parse(localStorage.getItem('user'));
 
   if (user && user.accessToken) {
+    console.log("123 : " + refresh);
     // for Node.js Express back-end
-    return { 'x-access-token': user.accessToken };
-    //return { Authorization: 'Bearer ' + user.accessToken };
+    if (refresh) {
+      return {
+        Authorization: 'Bearer ' + user.accessToken,
+        refresh: user.refreshToken
+      };
+    } else {
+      return { Authorization: 'Bearer ' + user.accessToken };
+    }
+
   } else {
     return {};
   }

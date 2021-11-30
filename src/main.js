@@ -9,6 +9,7 @@ import axios from "axios";
 Vue.prototype.$axios = axios;
 
 Vue.config.productionTip = false;
+Vue.config.silent = true;
 
 Vue.filter("makeComma", val =>{
     return String(val).replace(/\B(?=(\d{3})+(?!\d))/g, ",");

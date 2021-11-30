@@ -12,10 +12,10 @@
                 <v-form>
                   <v-text-field
                     prepend-icon="mdi-account"
-                    name="login"
-                    label="Login"
+                    name="email"
+                    label="email"
                     type="text"
-                    v-model="user.username"
+                    v-model="user.email"
                   ></v-text-field>
                   <v-text-field
                     id="password"
@@ -62,16 +62,16 @@ export default {
   },
   created() {
     if (this.loggedIn) {
-      this.$router.push({name:"/Home"});
+      this.$router.push({name:"Home"});
     }
   },
   methods: {
     handleLogin() {
-      if (this.user.username && this.user.password) {
+      if (this.user.email && this.user.password) {
         this.$store.dispatch("auth/login", this.user)
         .then(
           () => {
-            this.$router.push({name:"/Home"});
+            this.$router.push({name:"Home"});
           },
           (error) => {
             this.loading = false;
