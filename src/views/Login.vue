@@ -71,6 +71,7 @@ export default {
         this.$store.dispatch("auth/login", this.user)
         .then(
           () => {
+            this.$store.state.global.subtitle = "Home";
             this.$router.push({name:"Home"});
           },
           (error) => {

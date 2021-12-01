@@ -69,8 +69,6 @@ import {
 import AccountService from '../../services/account.service';
 import UserService from '../../services/user.service';
 import Account from "../../models/account";
-import AuthService from '../../services/auth.service';
-
 
 setInteractionMode("eager");
 
@@ -120,7 +118,7 @@ export default {
       , this.account.amount, this.account.remark)) 
       .then((res) => {
         if(res){
-          console.log(res);
+          
           if(res.data.code === "0000")
           {
             this.clear();
@@ -128,10 +126,28 @@ export default {
           }
           else if (res.data.code === "3100"){
             if(!isReTry){
-              AuthService.refresh().then(rst => this.submit(true)).catch(e => alert(e.message));
+              this.$store.dispatch("auth/refresh")
+              .then(
+                () => {
+                 this.submit(true);
+                },
+                (error) => {
+                  console.log(error.message);
+                  // this.loading = false;
+                  // this.message =
+                  //   (error.response && error.response.data) ||
+                  //   error.message ||
+                  //   error.toString();
+
+                  this.$store.dispatch("auth/logout");
+                  this.$router.push({ name: "LoginPage" });
+                }
+              );
             }
             else{
               alert(res.data.message);
+              this.$store.dispatch("auth/logout");
+              this.$router.push({ name: "LoginPage" });
             }
           }
         }

@@ -33,7 +33,17 @@ class AuthService {
   }
 
   refresh() {
-    return axios.post(API_URL + 'refresh', { headers: authHeader(true) });
+    return axios
+      .post(API_URL + 'refresh', {}, { headers: authHeader(true) })
+      .then(response => {
+        if (response.data && response.data.code === "0000" && response.data.data.accessToken) {
+          let user = JSON.parse(localStorage.getItem('user'));
+          user.accessToken = response.data.data.accessToken;
+          user.refreshToken = response.data.data.refreshToken;
+          localStorage.setItem('user', JSON.stringify(user));
+        }
+        return response.data.data;
+      });
   }
 }
 
