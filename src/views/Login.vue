@@ -6,14 +6,14 @@
           <v-flex xs12 sm8 md4>
             <v-card class="elevation-12">
               <v-toolbar dark>
-                <v-toolbar-title>Login form</v-toolbar-title>
+                <v-toolbar-title>Login Form</v-toolbar-title>
               </v-toolbar>
               <v-card-text>
                 <v-form>
                   <v-text-field
                     prepend-icon="mdi-account"
                     name="email"
-                    label="email"
+                    label="Email"
                     type="text"
                     v-model="user.email"
                   ></v-text-field>
@@ -28,6 +28,11 @@
                 </v-form>
               </v-card-text>
               <v-card-actions>
+                <v-checkbox
+                  class="ml-2"
+                  v-model="checkbox"
+                  label="Email 정보 기억하기"
+                ></v-checkbox>
                 <v-spacer></v-spacer>
                 <v-btn @click="handleLogin()">Login</v-btn>
               </v-card-actions>
@@ -52,27 +57,30 @@ export default {
       user: new User("", ""),
       loading: false,
       message: "",
+      checkbox: false,
     };
   },
   computed: {
     loggedIn() {
-      //console.log(this.$store.state.auth.status.loggedIn);
       return this.$store.state.auth.status.loggedIn;
     },
   },
   created() {
     if (this.loggedIn) {
-      this.$router.push({name:"Home"});
+      this.$router.push({ name: "Home" });
     }
   },
   methods: {
     handleLogin() {
       if (this.user.email && this.user.password) {
-        this.$store.dispatch("auth/login", this.user)
-        .then(
+        this.$store.dispatch("auth/login", this.user).then(
           () => {
             this.$store.state.global.subtitle = "Home";
-            this.$router.push({name:"Home"});
+            this.$router.push({ name: "Home" });
+            if(this.checkbox)
+              localStorage.setItem("loginEmail", this.user.email);
+            else 
+              localStorage.removeItem('loginEmail');
           },
           (error) => {
             this.loading = false;
@@ -84,29 +92,15 @@ export default {
         );
       }
     },
-    // onSubmit(){
-    //   const id = this.id;
-    //   const password = this.password;
-    //   this.$axios
-    //     .post("/api/auth/signin", {
-    //       username: id,
-    //       password: password
-    //     })
-    //     .then((res) => {
-
-    //       if (res.data.accessToken) {
-    //         this.$store.dispatch("SET_USER", res.data);
-    //         this.$router.push({
-    //           name: "Home",
-    //         });
-    //         //localStorage.setItem('user', JSON.stringify(res.data));
-    //       }
-    //     })
-    //     .catch((err) => {
-    //       alert(err);
-    //     });
-    // }
   },
+  mounted(){
+    let loginEmail = localStorage.getItem("loginEmail");
+    if(loginEmail)
+    {
+      this.checkbox = true;
+      this.user = new User("", "", loginEmail, "");
+    }
+  }
 };
 </script>
 

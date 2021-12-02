@@ -10,7 +10,7 @@
         <router-view></router-view>
       </v-container>
     </v-main>
-    <main-footer v-if="currentUser" />
+    <main-footer v-if="false" />
   </v-app>
 </template>
 

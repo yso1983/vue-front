@@ -41,8 +41,12 @@ class AuthService {
           user.accessToken = response.data.data.accessToken;
           user.refreshToken = response.data.data.refreshToken;
           localStorage.setItem('user', JSON.stringify(user));
+
+          return response.data.data;
         }
-        return response.data.data;
+        else{
+          return null;
+        }
       });
   }
 }

@@ -103,8 +103,7 @@ export default {
     ValidationObserver,
   },
   data: () => ({
-    users: [], 
-    //account: null
+    users: []
   }),
   computed: {
     account() {
@@ -144,11 +143,6 @@ export default {
                 }
               );
             }
-            else{
-              alert(res.data.message);
-              this.$store.dispatch("auth/logout");
-              this.$router.push({ name: "LoginPage" });
-            }
           }
         }
         else 
@@ -164,13 +158,18 @@ export default {
     },
     read() {
       UserService.getUsers().then((res) => {
-        if (res.data && res.data.code === "0000") this.users = res.data.data;
+        if (res.data && res.data.code === "0000") {
+          this.users = res.data.data;
+        }
       });
     },
   },
   created() {
     //this.account  = this.$store.state.global.account;
     this.read();
+  },
+  mounted() {
+    this.$store.dispatch("global/CHANGE_ACCOUNT", new Account(0, this.$store.state.auth.user.id, '', '', ''));
   },
 };
 </script>

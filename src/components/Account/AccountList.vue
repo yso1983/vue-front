@@ -48,7 +48,8 @@ export default {
     },
     read() {
       this.loading = true;
-      AccountService.getAaccounts().then((res) => {
+      AccountService.getAaccounts()
+      .then((res) => {
 
         if (res.data && res.data.code === "0000") {
           this.loading = false;

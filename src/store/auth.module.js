@@ -40,8 +40,14 @@ export const auth = {
     refresh({ commit }) {
       return AuthService.refresh().then(
         tokens => {
-          commit('refresh', tokens);
-          return Promise.resolve(tokens);
+          if(tokens == null){
+            this.logout({commit});
+            return Promise.reject({message : "token is null"}); 
+          }
+          else{
+            commit('refresh', tokens);
+            return Promise.resolve(tokens);
+          }
         },
         error => {
           commit('registerFailure');

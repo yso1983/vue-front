@@ -1,6 +1,15 @@
 <template>
-  <div id="dnw" app></div>
+  <div id="dnw" app>
+    <DnwForm />
+  </div>
 </template>
 <script>
-export default {};
+import DnwForm from "../components/Dnw/DnwForm.vue";
+
+export default {
+  name: "dnw",
+  components: {
+    DnwForm: DnwForm,
+  },
+};
 </script>
