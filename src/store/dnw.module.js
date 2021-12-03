@@ -55,6 +55,9 @@ export const dnw = {
         }
       );
     },
+    changeDetail({ commit }, detail){
+      commit('changeDetail', detail);
+    },
   },
   mutations: {
     items(state, items) {
@@ -64,7 +67,23 @@ export const dnw = {
       state.items.push(item);
     },
     details(state, details) {
-      state.details = details;
+      state.details = details.map((obj) => {
+        return {
+          id: obj.id,
+          account_id: obj.account_id,
+          account_name: obj.account.name,
+          user_id: obj.created_user_id,
+          user_name: obj.account.user.name,
+          dnw_item_id: obj.dnw_item_id,
+          dnw_item_name: obj.dnw_item.name,
+          remark: obj.remark,
+          amount: obj.amount,
+          standard_dt: obj.standard_dt
+        };
+      });
+    },
+    changeDetail(state, detail){
+       state.detail = detail;
     },
   },
   getters: {

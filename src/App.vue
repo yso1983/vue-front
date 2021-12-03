@@ -13,6 +13,9 @@
     <main-footer v-if="false" />
   </v-app>
 </template>
+<style>
+html { overflow-y: auto }
+</style>
 
 <script>
 //1. vue, 및 vue-router 를 import 후 Vue.use(VueRouter) 합니다.

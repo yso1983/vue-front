@@ -1,15 +1,15 @@
 <template>
   <v-card class="mx-auto text-center" dark app>
     <validation-observer ref="observer" v-slot="{ invalid }">
-      <form @submit.prevent="submit(false)">
-        <input type="hidden" v-model="account.id" />
+      <form @submit.prevent="submit()">
+        <input type="hidden" v-model="detail.id" />
         <validation-provider
           v-slot="{ errors }"
           name="select_users"
           rules="required"
         >
           <v-select
-            v-model="account.user_id"
+            v-model="detail.user_id"
             :items="users"
             item-text="name"
             item-value="id"
@@ -25,7 +25,7 @@
           rules="required"
         >
           <v-select
-            v-model="account.id"
+            v-model="detail.account_id"
             :items="accounts"
             item-text="name"
             item-value="id"
@@ -36,14 +36,14 @@
           ></v-select>
         </validation-provider>
         <v-row>
-          <v-col cols="11" md="11" sm="11">
+          <v-col cols="11" md="5" sm="5">
             <validation-provider
               v-slot="{ errors }"
               name="select_items"
               rules="required"
             >
               <v-select
-                v-model="account.id"
+                v-model="detail.dnw_item_id"
                 :items="items"
                 item-text="name"
                 item-value="id"
@@ -57,26 +57,42 @@
           <v-col cols="1" md="1" sm="1" class="ma-auto pl-0">
             <ItemForm />
           </v-col>
-        </v-row>
+          <v-col
+            cols="12"
+            sm="6"
+            md="6"
+          >
+            <v-dialog
+              ref="dialog"
+              v-model="menu2"
+              :close-on-content-click="ture"
+              persistent
+              width="290px"
+            >
+              <template v-slot:activator="{ on, attrs }">
+                <v-text-field
+                  v-model="date"
+                  label="Picker in dialog"
+                  prepend-icon="mdi-calendar"
+                  readonly
+                  v-bind="attrs"
+                  v-on="on"
+                ></v-text-field>
+              </template>
+              <v-date-picker
+                locale="ko-kr"
+                v-model="date"
+                @input="menu2 = false"
+              ></v-date-picker>
+            </v-dialog>
+          </v-col>
 
-        <validation-provider
-          v-slot="{ errors }"
-          name="항목"
-          rules="required|max:25"
-        >
+        </v-row>
+        <validation-provider v-slot="{ errors }" name="금액" rules="required">
           <v-text-field
-            v-model="account.name"
-            :counter="25"
+            v-model="detail.amount"
             :error-messages="errors"
-            label="항목"
-            required
-          ></v-text-field>
-        </validation-provider>
-        <validation-provider v-slot="{ errors }" name="잔액" rules="required">
-          <v-text-field
-            v-model="account.amount"
-            :error-messages="errors"
-            label="잔액"
+            label="금액"
             type="number"
             min="0"
             step=".1"
@@ -85,11 +101,13 @@
         </validation-provider>
         <v-textarea
           solo
-          v-model="account.remark"
+          v-model="detail.remark"
           name="비고"
           :counter="200"
           label="비고"
           outlined
+          rows="2"
+          row-height="20"
         ></v-textarea>
         <v-btn class="mr-4" type="submit" :disabled="invalid"> submit </v-btn>
         <v-btn @click="clear"> clear </v-btn>
@@ -111,7 +129,7 @@ import AccountService from "../../services/account.service";
 import UserService from "../../services/user.service";
 import DnwService from "../../services/dnw.service";
 
-import Account from "../../models/account";
+import dnwDetail from "../../models/dnw.detail";
 import ItemForm from "./DnwItemForm.vue";
 
 setInteractionMode("eager");
@@ -150,54 +168,30 @@ export default {
   data: () => ({
     users: [],
     accounts: [],
-    //dwnitems: []
+    //dwnitems: [],
+    date: (new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 10),
+    menu2: false,
   }),
   computed: {
     ...mapGetters('dnw',  [
       'items',
     ]),
-    account() {
-      return this.$store.state.global.account;
+    detail() {
+      return this.$store.state.dnw.detail;
     },
   },
   methods: {
-    submit(isReTry) {
+    submit() {
       this.$refs.observer.validate();
-      AccountService.setAaccount(
-        new Account(
-          this.account.id,
-          this.account.user_id,
-          this.account.name,
-          this.account.amount,
-          this.account.remark
-        )
-      )
+      DnwService.setDetail(this.detail)
         .then((res) => {
           if (res) {
             if (res.data.code === "0000") {
               this.clear();
-              //this.$parent.$children[1].read();
-            } else if (res.data.code === "3100") {
-              if (!isReTry) {
-                this.$store.dispatch("auth/refresh").then(
-                  () => {
-                    this.submit(true);
-                  },
-                  (error) => {
-                    console.log(error.message);
-                    // this.loading = false;
-                    // this.message =
-                    //   (error.response && error.response.data) ||
-                    //   error.message ||
-                    //   error.toString();
-
-                    this.$store.dispatch("auth/logout");
-                    this.$router.push({ name: "LoginPage" });
-                  }
-                );
-              }
-            }
-          } else alert("실패");
+            } 
+          } 
+          else 
+            alert("실패");
         })
         .catch((err) => {
           alert(err.message);
@@ -205,8 +199,8 @@ export default {
     },
     clear() {
       this.$store.dispatch(
-        "global/CHANGE_ACCOUNT",
-        new Account(0, 0, "", 0, "")
+        "dnw/changeDetail",
+        new dnwDetail(0)
       );
       this.$refs.observer.reset();
     },
@@ -217,22 +211,14 @@ export default {
         }
       });
     },
-    getDetails() {
-       this.$store.dispatch("dnw/details").then(
-        (res) => {
-          if(res.code === "3100"){
-            this.$store.dispatch("auth/logout");
-            this.$router.push({ name: "LoginPage" });
+    getAccounts() {
+      AccountService.getAaccounts(
+        "userid=" + this.$store.state.auth.user.id
+      ).then((res) => {
+        if (res.data && res.data.code === "0000") {
+          this.accounts = res.data.data;
           }
-
-          if(res.code === "0000"){
-            //this.dwnitems = res.data;
-          }
-        },
-        (error) => {
-          alert(error.message);
-        }
-      ).catch(err => alert(err.message));
+      });
     },
     getItems(){
       this.$store.dispatch("dnw/items").then(
@@ -254,14 +240,14 @@ export default {
   },
   created() {
     this.getUsers();
-    this.getDetails();
+    this.getAccounts();
     this.getItems();
   },
   mounted() {
     this.$store.dispatch(
-      "global/CHANGE_ACCOUNT",
-      new Account(0, this.$store.state.auth.user.id, "", "", "")
-    );
+        "dnw/changeDetail",
+        new dnwDetail(0, 0, 0, this.$store.state.auth.user.id)
+      );
   },
 };
 </script>

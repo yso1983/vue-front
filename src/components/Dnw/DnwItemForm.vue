@@ -54,6 +54,8 @@
                   :counter="200"
                   label="비고"
                   outlined
+                  rows="2"
+                  row-height="20"
                 ></v-textarea>
               </validation-provider>
               </v-col>

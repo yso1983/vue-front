@@ -50,6 +50,8 @@
           :counter="200"
           label="비고"
           outlined
+          rows="2"
+          row-height="20"
         ></v-textarea>
 
         <v-btn class="mr-4" type="submit" :disabled="invalid"> submit </v-btn>

@@ -1,7 +1,7 @@
 <template>
   <v-data-table
     id="account_list"
-    style="width: 100%"
+    style="width: 98%"
     :headers="headers"
     :items="accounts"
     :items-per-page="10"
