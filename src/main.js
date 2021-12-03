@@ -13,7 +13,8 @@ Vue.config.productionTip = false;
 Vue.config.silent = true;
 
 Vue.filter("makeComma", val =>{
-    return String(val).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    //return String(val).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    return val.toString().substring(0, val.toString().indexOf('.')).replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
 });
 
 Vue.filter('formatDate', function(value) {

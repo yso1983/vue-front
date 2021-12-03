@@ -3,9 +3,9 @@ import DnwDetail from '../models/dnw.detail';
 
 
 const initialState = {
-  items : [],
-  detail : new DnwDetail(0),
-  details : []
+  items: [],
+  detail: new DnwDetail(0),
+  details: []
 };
 
 export const dnw = {
@@ -14,49 +14,50 @@ export const dnw = {
   actions: {
     items({ commit }) {
       return DnwSevrice.getItems()
-      .then(
-        items => {
-          if(items.data){
-            if(items.data.code === "0000")
-            {
-              commit('items', items.data.data);
+        .then(
+          items => {
+            if (items.data) {
+              if (items.data.code === "0000") {
+                commit('items', items.data.data);
+              }
+              return Promise.resolve(items.data);
             }
-            return Promise.resolve(items.data);
+            else {
+              return Promise.reject({ massage: "response data is not fund" });
+            }
+          },
+          error => {
+            return Promise.reject(error);
           }
-          else{
-            return Promise.reject({massage: "response data is not fund"});
-          }
-        },
-        error => {
-          return Promise.reject(error);
-        }
-      );
+        );
     },
-    setItem({ commit }, item){
+    setItem({ commit }, item) {
       commit('setItem', item);
     },
     details({ commit }, date) {
       return DnwSevrice.getDetails(date)
-      .then(
-        res => {
-          if(res.data){
-            if(res.data.code === "0000")
-            {
-              commit('details', res.data.data);
+        .then(
+          res => {
+            if (res.data) {
+              if (res.data.code === "0000") {
+                commit('details', res.data.data);
+              }
+              return Promise.resolve(res.data);
             }
-            return Promise.resolve(res.data);
+            else {
+              return Promise.reject({ massage: "response data is not fund" });
+            }
+          },
+          error => {
+            return Promise.reject(error);
           }
-          else{
-            return Promise.reject({massage: "response data is not fund"});
-          }
-        },
-        error => {
-          return Promise.reject(error);
-        }
-      );
+        );
     },
-    changeDetail({ commit }, detail){
+    changeDetail({ commit }, detail) {
       commit('changeDetail', detail);
+    },
+    setDetail({ commit }, detail) {
+      commit('setDetail', detail);
     },
   },
   mutations: {
@@ -82,19 +83,22 @@ export const dnw = {
         };
       });
     },
-    changeDetail(state, detail){
-       state.detail = detail;
+    changeDetail(state, detail) {
+      state.detail = detail;
+    },
+    setDetail(state, detail) {
+      state.details.push(detail);
     },
   },
   getters: {
     items(state) {
       return state.items;
     },
-    detail(state){
+    detail(state) {
       return state.detail;
     },
-    details(state){
+    details(state) {
       return state.details;
-    }
+    },
   }
 };

@@ -1,5 +1,5 @@
 <template>
-  <v-card class="mx-auto text-center" dark app>
+  <v-card id="dnw_form" class="mx-auto text-center" dark app>
     <validation-observer ref="observer" v-slot="{ invalid }">
       <form @submit.prevent="submit()">
         <input type="hidden" v-model="detail.id" />
@@ -57,11 +57,7 @@
           <v-col cols="1" md="1" sm="1" class="ma-auto pl-0">
             <ItemForm />
           </v-col>
-          <v-col
-            cols="12"
-            sm="6"
-            md="6"
-          >
+          <v-col cols="12" sm="6" md="6">
             <v-dialog
               ref="dialog"
               v-model="menu2"
@@ -71,7 +67,7 @@
             >
               <template v-slot:activator="{ on, attrs }">
                 <v-text-field
-                  v-model="date"
+                  v-model="detail.standard_dt"
                   label="Picker in dialog"
                   prepend-icon="mdi-calendar"
                   readonly
@@ -81,12 +77,11 @@
               </template>
               <v-date-picker
                 locale="ko-kr"
-                v-model="date"
+                v-model="detail.standard_dt"
                 @input="menu2 = false"
               ></v-date-picker>
             </v-dialog>
           </v-col>
-
         </v-row>
         <validation-provider v-slot="{ errors }" name="금액" rules="required">
           <v-text-field
@@ -94,7 +89,6 @@
             :error-messages="errors"
             label="금액"
             type="number"
-            min="0"
             step=".1"
             required
           ></v-text-field>
@@ -123,7 +117,7 @@ import {
   ValidationProvider,
   setInteractionMode,
 } from "vee-validate";
-import { mapGetters } from 'vuex';
+import { mapGetters } from "vuex";
 
 import AccountService from "../../services/account.service";
 import UserService from "../../services/user.service";
@@ -160,6 +154,7 @@ extend("email", {
 });
 
 export default {
+  name: "dnwForm",
   components: {
     ValidationProvider,
     ValidationObserver,
@@ -169,13 +164,13 @@ export default {
     users: [],
     accounts: [],
     //dwnitems: [],
-    date: (new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 10),
+    date: new Date(Date.now() - new Date().getTimezoneOffset() * 60000)
+      .toISOString()
+      .substr(0, 10),
     menu2: false,
   }),
   computed: {
-    ...mapGetters('dnw',  [
-      'items',
-    ]),
+    ...mapGetters("dnw", ["items"]),
     detail() {
       return this.$store.state.dnw.detail;
     },
@@ -188,10 +183,9 @@ export default {
           if (res) {
             if (res.data.code === "0000") {
               this.clear();
-            } 
-          } 
-          else 
-            alert("실패");
+              this.$parent.$children.filter(x => x.$el.id == 'dnw_list')[0].getDetails();
+            }
+          } else alert("실패");
         })
         .catch((err) => {
           alert(err.message);
@@ -200,7 +194,7 @@ export default {
     clear() {
       this.$store.dispatch(
         "dnw/changeDetail",
-        new dnwDetail(0)
+        new dnwDetail(0, 0, 0, this.$store.state.auth.user.id, null, this.date, "")
       );
       this.$refs.observer.reset();
     },
@@ -217,37 +211,44 @@ export default {
       ).then((res) => {
         if (res.data && res.data.code === "0000") {
           this.accounts = res.data.data;
-          }
+        }
       });
     },
-    getItems(){
-      this.$store.dispatch("dnw/items").then(
-        (res) => {
-          if(res.code === "3100"){
-            this.$store.dispatch("auth/logout");
-            this.$router.push({ name: "LoginPage" });
-          }
+    getItems() {
+      this.$store
+        .dispatch("dnw/items")
+        .then(
+          (res) => {
+            if (res.code === "3100") {
+              this.$store.dispatch("auth/logout");
+              this.$router.push({ name: "LoginPage" });
+            }
 
-          if(res.code === "0000"){
-            //this.dwnitems = res.data;
+            if (res.code === "0000") {
+              // if (res.data)
+              //   this.$store.dispatch("dnw/setDetail", res.data);
+            }
+          },
+          (error) => {
+            alert(error.message);
           }
-        },
-        (error) => {
-          alert(error.message);
-        }
-      ).catch(err => alert(err.message));
-    },
+        )
+        .catch((err) => alert(err.message));
+    }
   },
   created() {
+    
     this.getUsers();
     this.getAccounts();
     this.getItems();
   },
   mounted() {
-    this.$store.dispatch(
-        "dnw/changeDetail",
-        new dnwDetail(0, 0, 0, this.$store.state.auth.user.id)
-      );
+    console.log(this.$parent.$children.filter(x => x.$el.id == 'dnw_list'));
+    this.clear();
+    // this.$store.dispatch(
+    //   "dnw/changeDetail",
+    //   new dnwDetail(0, 0, 0, this.$store.state.auth.user.id, null, this.date, "")
+    // );
   },
 };
 </script>
