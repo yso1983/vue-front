@@ -12,8 +12,8 @@ class DnwService {
     return axios.put(API_URL + 'items', item, { headers: authHeader() });
   }
 
-  getDetails() {
-     return axios.get(API_URL + 'details', { headers: authHeader() });
+  getDetails(params) {
+     return axios.get(API_URL + params + '/details', { headers: authHeader() });
   }
   
   setDetail(detail) {

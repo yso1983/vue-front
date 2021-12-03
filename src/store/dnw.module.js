@@ -35,8 +35,8 @@ export const dnw = {
     setItem({ commit }, item){
       commit('setItem', item);
     },
-    details({ commit }) {
-      return DnwSevrice.getDetails()
+    details({ commit }, date) {
+      return DnwSevrice.getDetails(date)
       .then(
         res => {
           if(res.data){

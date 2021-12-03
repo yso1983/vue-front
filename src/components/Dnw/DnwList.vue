@@ -30,7 +30,7 @@
         <v-date-picker
           locale="ko-kr"
           v-model="date"
-          @input="$refs.menu.save(date)"
+          @input="searchMonth(date)"
           type="month"
           no-title
           scrollable
@@ -106,9 +106,8 @@ export default {
       // , value.amount, value.remark));
     },
     getDetails() {
-      console.log(this.date);
       this.loading = true;
-      this.$store.dispatch("dnw/details").then(
+      this.$store.dispatch("dnw/details", this.date).then(
       (res) => {
         if(res.code === "3100"){
           this.$store.dispatch("auth/logout");
@@ -125,6 +124,10 @@ export default {
       }
       ).catch(err => alert(err.message));
     },
+    searchMonth(date){
+      this.$refs.menu.save(date);
+      this.getDetails();
+    }
   },
   created() {
     this.getDetails();
