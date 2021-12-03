@@ -15,7 +15,7 @@
             item-value="id"
             :error-messages="errors"
             label="Select Users"
-            data-vv-name="select"
+            data-vv-name="select_users"
             required
           ></v-select>
         </validation-provider>
@@ -31,12 +31,12 @@
             item-value="id"
             :error-messages="errors"
             label="Select Account"
-            data-vv-name="select"
+            data-vv-name="select_accounts"
             required
           ></v-select>
         </validation-provider>
         <v-row>
-          <v-col cols="12" md="11" sm="11">
+          <v-col cols="11" md="11" sm="11">
             <validation-provider
               v-slot="{ errors }"
               name="select_items"
@@ -44,18 +44,17 @@
             >
               <v-select
                 v-model="account.id"
-                :items="accounts"
+                :items="items"
                 item-text="name"
                 item-value="id"
                 :error-messages="errors"
                 label="Select Items"
-                data-vv-name="select"
+                data-vv-name="select_items"
                 required
-                full-width="true"
               ></v-select>
             </validation-provider>
           </v-col>
-          <v-col cols="12" md="1" sm="1" class="ma-auto pl-0">
+          <v-col cols="1" md="1" sm="1" class="ma-auto pl-0">
             <ItemForm />
           </v-col>
         </v-row>
@@ -92,7 +91,6 @@
           label="비고"
           outlined
         ></v-textarea>
-
         <v-btn class="mr-4" type="submit" :disabled="invalid"> submit </v-btn>
         <v-btn @click="clear"> clear </v-btn>
       </form>
@@ -107,8 +105,12 @@ import {
   ValidationProvider,
   setInteractionMode,
 } from "vee-validate";
+import { mapGetters } from 'vuex';
+
 import AccountService from "../../services/account.service";
 import UserService from "../../services/user.service";
+import DnwService from "../../services/dnw.service";
+
 import Account from "../../models/account";
 import ItemForm from "./DnwItemForm.vue";
 
@@ -148,8 +150,12 @@ export default {
   data: () => ({
     users: [],
     accounts: [],
+    //dwnitems: []
   }),
   computed: {
+    ...mapGetters('dnw',  [
+      'items',
+    ]),
     account() {
       return this.$store.state.global.account;
     },
@@ -170,7 +176,7 @@ export default {
           if (res) {
             if (res.data.code === "0000") {
               this.clear();
-              this.$parent.$children[1].read();
+              //this.$parent.$children[1].read();
             } else if (res.data.code === "3100") {
               if (!isReTry) {
                 this.$store.dispatch("auth/refresh").then(
@@ -204,28 +210,52 @@ export default {
       );
       this.$refs.observer.reset();
     },
-    read() {
+    getUsers() {
       UserService.getUsers().then((res) => {
         if (res.data && res.data.code === "0000") {
           this.users = res.data.data;
         }
       });
     },
-    getAccounts() {
-      AccountService.getAaccounts(
-        "userid=" + this.$store.state.auth.user.id
-      ).then((res) => {
-        if (res.data && res.data.code === "0000") {
-          this.accounts = res.data.data;
+    getDetails() {
+       this.$store.dispatch("dnw/details").then(
+        (res) => {
+          if(res.code === "3100"){
+            this.$store.dispatch("auth/logout");
+            this.$router.push({ name: "LoginPage" });
+          }
+
+          if(res.code === "0000"){
+            //this.dwnitems = res.data;
+          }
+        },
+        (error) => {
+          alert(error.message);
         }
-      });
+      ).catch(err => alert(err.message));
     },
-    modalItems() {},
+    getItems(){
+      this.$store.dispatch("dnw/items").then(
+        (res) => {
+          if(res.code === "3100"){
+            this.$store.dispatch("auth/logout");
+            this.$router.push({ name: "LoginPage" });
+          }
+
+          if(res.code === "0000"){
+            //this.dwnitems = res.data;
+          }
+        },
+        (error) => {
+          alert(error.message);
+        }
+      ).catch(err => alert(err.message));
+    },
   },
   created() {
-    //this.account  = this.$store.state.global.account;
-    this.read();
-    this.getAccounts();
+    this.getUsers();
+    this.getDetails();
+    this.getItems();
   },
   mounted() {
     this.$store.dispatch(

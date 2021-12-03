@@ -13,80 +13,53 @@
 					mdi-plus</v-icon>
       </template>
       <v-card>
+      <input type="hidden" v-model="currentItem.id" />
+      <validation-observer ref="observer" v-slot="{ invalid }">
         <v-card-title>
-          <span class="text-h5">User Profile</span>
+          <span class="text-h5">지출 항목</span>
         </v-card-title>
         <v-card-text>
           <v-container>
             <v-row>
               <v-col
                 cols="12"
-                sm="6"
-                md="4"
+              >
+              <validation-provider
+                v-slot="{ errors }"
+                name="항목"
+                rules="required"
               >
                 <v-text-field
-                  label="Legal first name*"
-                  required
-                ></v-text-field>
-              </v-col>
-              <v-col
-                cols="12"
-                sm="6"
-                md="4"
-              >
-                <v-text-field
-                  label="Legal middle name"
-                  hint="example of helper text only on focus"
-                ></v-text-field>
-              </v-col>
-              <v-col
-                cols="12"
-                sm="6"
-                md="4"
-              >
-                <v-text-field
-                  label="Legal last name*"
-                  hint="example of persistent helper text"
+                  v-model="currentItem.name"
+                  :error-messages="errors"
+                  label="item name*"
+                  hint="지출 항목 명을 입력하세요."
+                  name="항목"
                   persistent-hint
                   required
                 ></v-text-field>
+              </validation-provider>
               </v-col>
               <v-col cols="12">
-                <v-text-field
-                  label="Email*"
-                  required
-                ></v-text-field>
-              </v-col>
-              <v-col cols="12">
-                <v-text-field
-                  label="Password*"
-                  type="password"
-                  required
-                ></v-text-field>
-              </v-col>
-              <v-col
-                cols="12"
-                sm="6"
+              <validation-provider
+                v-slot="{ errors }"
+                name="비고"
+                rules="max:200"
               >
-                <v-select
-                  :items="['0-17', '18-29', '30-54', '54+']"
-                  label="Age*"
-                  required
-                ></v-select>
-              </v-col>
-              <v-col
-                cols="12"
-                sm="6"
-              >
-                <v-autocomplete
-                  :items="['Skiing', 'Ice hockey', 'Soccer', 'Basketball', 'Hockey', 'Reading', 'Writing', 'Coding', 'Basejump']"
-                  label="Interests"
-                  multiple
-                ></v-autocomplete>
+                <v-textarea
+                  solo
+                  v-model="currentItem.remark"
+                  :error-messages="errors"
+                  name="비고"
+                  :counter="200"
+                  label="비고"
+                  outlined
+                ></v-textarea>
+              </validation-provider>
               </v-col>
             </v-row>
           </v-container>
-          <small>*indicates required field</small>
+          <small>* indicates required field</small>
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
@@ -100,19 +73,74 @@
           <v-btn
             color="blue darken-1"
             text
-            @click="dialog = false"
+            @click="save"
+            :disabled="invalid"
           >
             Save
           </v-btn>
         </v-card-actions>
+      </validation-observer>
       </v-card>
     </v-dialog>
   </v-row>
 </template>
 <script>
+import { required, digits, email, max, regex } from "vee-validate/dist/rules";
+import {
+  extend,
+  ValidationObserver,
+  ValidationProvider,
+  setInteractionMode,
+} from "vee-validate";
+
+setInteractionMode("eager");
+
+extend("required", {
+  ...required,
+  message: "{_field_} can not be empty",
+});
+
+extend("max", {
+  ...max,
+  message: "{_field_} may not be greater than {length} characters",
+});
+
+import DnwService from "../../services/dnw.service";
+import item from "../../models/dnw.item";
+
   export default {
+    components: {
+      ValidationProvider,
+      ValidationObserver,
+    },
     data: () => ({
+      currentItem: new item("", ""),
       dialog: false,
     }),
+    methods: {
+      save() {
+        this.$refs.observer.validate();
+        DnwService.setItem(this.currentItem)
+        .then(res => {
+          if(res.data){
+            if(res.data.code === "0000"){
+              if(res.data.data)
+                this.$store.dispatch("dnw/setItem", res.data.data);
+
+              this.clear();
+            }
+            else{
+              alert(res.data.message);
+            }
+          }
+        });
+
+      },
+      clear() {
+        this.currentItem = new item("", "");
+        this.dialog = false;
+        this.$refs.observer.reset();
+      }
+    },
   };
 </script>
