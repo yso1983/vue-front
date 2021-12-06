@@ -28,36 +28,7 @@ export default {
         },
       ],
     };
-  },
-  computed: {
-    currentUser() {
-      //console.log(this.$store.state.auth.user);
-      return this.$store.state.auth.user;
-    },
-  },
-  mounted() {
-    if (!this.currentUser) {
-      this.$router.push({name: "LoginPage"});
-    }
   }
-  // created() {
-  //   this.$axios.get("/api/auth/signin").then((res) => {
-  //     const user = res.data.data;
-
-  //     console.log(user);
-  //     if (user) {
-  //       this.$store.dispatch("SET_USER", user);
-  //     }
-  //     else{
-  //       this.$router.push({
-  //         name: "LoginPage"
-  //       });
-  //     }
-
-  //   }).catch((err) => {
-  //     console.error(err);
-  //   });
-  // },
 };
 </script>
 

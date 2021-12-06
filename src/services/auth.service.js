@@ -49,6 +49,19 @@ class AuthService {
         }
       });
   }
+
+  check(){
+    return axios.post(API_URL, {}, { headers: authHeader() })
+      .then(res => {
+        if(res.data){
+          return res.data.code;
+        }
+        else{
+          return "9999";
+        }
+      })
+    ;
+  }
 }
 
 export default new AuthService();

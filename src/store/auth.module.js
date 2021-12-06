@@ -50,7 +50,18 @@ export const auth = {
           }
         },
         error => {
-          commit('registerFailure');
+          commit('loginFailure');
+          return Promise.reject(error);
+        }
+      );
+    }, 
+    check({commit}){
+      return AuthService.check().then(
+        code => {
+          return Promise.resolve(code);
+        },
+        error => {
+          commit('loginFailure');
           return Promise.reject(error);
         }
       );

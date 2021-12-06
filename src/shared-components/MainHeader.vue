@@ -49,22 +49,6 @@ export default {
       if (text == "Logout") {
         this.$store.dispatch("auth/logout");
         this.$router.push({ name: "LoginPage" });
-
-        // this.$axios
-        // .get("/api/auth/signout")
-        // .then((res) => {
-        //   if (res.data && res.data.code === "0000") {
-        //     this.$store.dispatch("SET_USER", null);
-        //     this.$router.push({
-        //       name: "LoginPage",
-        //     });
-        //   } else {
-        //     alert(res.msg);
-        //   }
-        // })
-        // .catch((err) => {
-        //   console.error(err);
-        // });
       }
     },
   },

@@ -14,7 +14,9 @@
   </v-app>
 </template>
 <style>
-html { overflow-y: auto }
+html {
+  overflow-y: auto;
+}
 </style>
 
 <script>
@@ -43,10 +45,41 @@ export default {
       return this.$store.state.auth.user;
     },
   },
+  methods: {
+    logout() {
+      this.$store.dispatch("auth/logout");
+      this.$router.push({ name: "LoginPage" });
+    },
+  },
   mounted() {
-    if (!this.currentUser) {
-      this.$router.push({name: "LoginPage"});
+    if (this.currentUser) {
+      this.$store
+        .dispatch("auth/check")
+        .then(
+          (res) => {
+            if (res == "0000" || res == "3100") {
+              if (res == "3100") {
+                this.$store.dispatch("auth/refresh").then(
+                  () => {
+                    console.log('refresh token!');
+                  },
+                  (error) => {
+                    this.logout();
+                  }
+                );
+              }
+            } else {
+              this.logout();
+            }
+          },
+          (error) => {
+            this.logout();
+          }
+        )
+        .catch((err) => alert(err.message));
+    } else {
+      this.$router.push({ name: "LoginPage" });
     }
-  }
+  },
 };
 </script>

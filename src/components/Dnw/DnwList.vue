@@ -58,10 +58,10 @@
       class="elevation-1 ml-3 mr-3"
       @click:row="handleClick"
     >
-      <template v-slot:item.standard_dt="{ item }">
+      <template v-slot:[`item.standard_dt`]="{ item }">
         <span>{{ item.standard_dt | formatDate }}</span>
       </template>
-      <template v-slot:item.amount="{ item }">
+      <template v-slot:[`item.amount`]="{ item }">
         <span>{{ item.amount | makeComma }}</span>
       </template>
     </v-data-table>
@@ -87,6 +87,7 @@ export default {
       { text: "지출항목", value: "dnw_item_name" },
       { text: "지출액", value: "amount" },
       { text: "지출일자", value: "standard_dt" },
+      { text: "비고", value: "remark" },
     ],
     date: new Date().toISOString().substr(0, 7),
     menu: false,
