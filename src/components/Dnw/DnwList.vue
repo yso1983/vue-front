@@ -78,7 +78,7 @@ export default {
     loading: true,
     headers: [
       {
-        text: "owner",
+        text: "Owner",
         align: "start",
         //sortable: false,
         value: "user_name",

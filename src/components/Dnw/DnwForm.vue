@@ -14,9 +14,10 @@
             item-text="name"
             item-value="id"
             :error-messages="errors"
-            label="Select Users"
             data-vv-name="select_users"
             required
+            @change="onChange($event)"
+            disabled
           ></v-select>
         </validation-provider>
         <validation-provider
@@ -176,6 +177,11 @@ export default {
     },
   },
   methods: {
+    initialize(){
+      this.getUsers();
+      this.getAccounts();
+      this.getItems();
+    },
     submit() {
       this.$refs.observer.validate();
       DnwService.setDetail(this.detail)
@@ -234,16 +240,16 @@ export default {
           }
         )
         .catch((err) => alert(err.message));
-    }
+    },
+    onChange(event) {
+      this.getAccounts();
+    },
   },
   created() {
-    
-    this.getUsers();
-    this.getAccounts();
-    this.getItems();
+    this.initialize();
   },
   mounted() {
-    console.log(this.$parent.$children.filter(x => x.$el.id == 'dnw_list'));
+    //console.log(this.$parent.$children.filter(x => x.$el.id == 'dnw_list'));
     this.clear();
     // this.$store.dispatch(
     //   "dnw/changeDetail",

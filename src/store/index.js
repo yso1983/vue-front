@@ -4,6 +4,7 @@ import Vuex from 'vuex';
 import { auth } from './auth.module';
 import { global } from './global.module';
 import { dnw } from './dnw.module';
+import { automaticDnw } from './automatic.dnw.module';
 
 Vue.use(Vuex);
 
@@ -12,5 +13,6 @@ export default new Vuex.Store({
     auth,
     global,
     dnw,
+    automaticDnw,
   }
 });

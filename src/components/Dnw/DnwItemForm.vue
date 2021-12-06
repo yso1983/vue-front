@@ -4,9 +4,9 @@
       <template v-slot:activator="{ on, attrs }">
         <v-icon dark v-bind="attrs" v-on="on"> mdi-plus</v-icon>
       </template>
-      <v-card>
+      <v-card v-if="dialog">
         <input type="hidden" v-model="currentItem.id" />
-        <validation-observer ref="observer" v-slot="{ invalid }">
+        <validation-observer ref="obsItem" v-slot="{ invalid }">
           <v-card-title>
             <span class="text-h5">지출 항목</span>
           </v-card-title>
@@ -17,6 +17,7 @@
                   <validation-provider
                     v-slot="{ errors }"
                     name="항목"
+                    rules="required"
                   >
                     <v-text-field
                       v-model="currentItem.name"
@@ -25,6 +26,7 @@
                       hint="지출 항목 명을 입력하세요."
                       name="항목"
                       persistent-hint
+                      required
                     ></v-text-field>
                   </validation-provider>
                 </v-col>
@@ -101,7 +103,7 @@ export default {
   methods: {
     save() {
       
-      this.$refs.observer.validate();
+      this.$refs.obsItem.validate();
       DnwService.setItem(this.currentItem).then((res) => {
         if (res.data) {
           if (res.data.code === "0000") {
@@ -124,11 +126,11 @@ export default {
     clear() {
       this.currentItem = new item("", "");
       this.dialog = false;
-      this.$refs.observer.reset();
+      this.$refs.obsItem.reset();
     },
   },
   created(){
-    console.log(this.$refs.observer);
+    console.log(this.$refs);
   }
 };
 </script>

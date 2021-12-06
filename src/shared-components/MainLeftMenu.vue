@@ -14,7 +14,7 @@
             v-for="(item, i) in items"
             :key="i"
             :to="{ path: item.pagePath }"
-            @click="menuActionClick(item.text)"
+            @click="menuActionClick(item.title)"
           >
             <v-list-item-icon>
               <v-icon v-text="item.icon"></v-icon>
@@ -48,28 +48,33 @@ export default {
       {
         icon: "mdi-home",
         text: "Home",
+        title: "Home",
         pagePath: "./home",
       },
       {
         icon: "mdi-inbox",
         text: "Chart",
+        title: "Chart",
         pagePath: "./chart",
       },
       {
         icon: "mdi-table-cog",
         text: "Account",
+        title: "Account",
         pagePath: "./account",
       },
       {
         icon: "mdi-monitor-edit",
         text: "Deposit & Withdrawal",
+        title: "Deposit & Withdrawal",
         pagePath: "./dnw",
       },
-      // {
-      //   icon: "mdi-table-cog",
-      //   text: "Items",
-      //   pagePath: "./Cate",
-      // },
+      {
+        icon: "mdi-autorenew",
+        text: "Automatic D&W",
+        title: "Automaric Deposit & Withdrawal",
+        pagePath: "./automaricDnw",
+      },
       // {
       //   icon: "mdi-chart-donut",
       //   text: "Data Usage",
@@ -86,7 +91,6 @@ export default {
   methods: {
     menuActionClick(text) {
       this.$store.state.global.subtitle = text;
-      //this.$store.commit("CHANGE_SUBTITLE", text);
     },
   },
 };

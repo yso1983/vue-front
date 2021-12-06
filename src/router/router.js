@@ -6,6 +6,7 @@ import Cate from "../views/Cate";
 import Account from "../views/Account";
 import Login from "../views/Login";
 import Dnw from "../views/Dnw";
+import autoDnw from "../views/AutomaticDnw";
 
 //2.Route 에서 사용 할 Component 정의
 Vue.use(VueRouter);
@@ -39,10 +40,15 @@ const routes = [
   },
   {
     path: "/dnw",
-    name: "Deposit&Withdrawal",
+    name: "D&W",
     component: Dnw,
   },
-  { path: "*", redirect: "/Home" },
+  {
+    path: "/automaricDnw",
+    name: "AutomaricD&W",
+    component: autoDnw,
+  },
+  { path: "*", redirect: "/chart" },
 ];
 
 //4. 정의한 routes로 Router instance를 생성 합니다.

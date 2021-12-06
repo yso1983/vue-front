@@ -45,7 +45,7 @@
     "rules": {
       "semi": [
         "error",
-        "always"
+        "always", { "omitLastInOneLineBlock": true }
       ],
       "no-unused-vars": [
         "off"

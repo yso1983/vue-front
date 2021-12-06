@@ -67,7 +67,7 @@ export default {
   },
   created() {
     if (this.loggedIn) {
-      this.$router.push({ name: "Home" });
+      this.$router.push({ name: "Chart" });
     }
   },
   methods: {
@@ -75,8 +75,8 @@ export default {
       if (this.user.email && this.user.password) {
         this.$store.dispatch("auth/login", this.user).then(
           () => {
-            this.$store.state.global.subtitle = "Home";
-            this.$router.push({ name: "Home" });
+            this.$store.state.global.subtitle = "Chart";
+            this.$router.push({ name: "Chart" });
             if(this.checkbox)
               localStorage.setItem("loginEmail", this.user.email);
             else 
