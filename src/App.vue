@@ -52,33 +52,35 @@ export default {
     },
   },
   mounted() {
-    if (this.currentUser) {
-      this.$store
-        .dispatch("auth/check")
-        .then(
-          (res) => {
-            if (res == "0000" || res == "3100") {
-              if (res == "3100") {
-                this.$store.dispatch("auth/refresh").then(
-                  () => {
-                    console.log('refresh token!');
-                  },
-                  (error) => {
-                    this.logout();
-                  }
-                );
+    if(!this.$route.path.includes('login')){
+      if (this.currentUser) {
+        this.$store
+          .dispatch("auth/check")
+          .then(
+            (res) => {
+              if (res == "0000" || res == "3100") {
+                if (res == "3100") {
+                  this.$store.dispatch("auth/refresh").then(
+                    () => {
+                      console.log('refresh token!');
+                    },
+                    (error) => {
+                      this.logout();
+                    }
+                  );
+                }
+              } else {
+                this.logout();
               }
-            } else {
+            },
+            (error) => {
               this.logout();
             }
-          },
-          (error) => {
-            this.logout();
-          }
-        )
-        .catch((err) => alert(err.message));
-    } else {
-      this.$router.push({ name: "LoginPage" });
+          )
+          .catch((err) => alert(err.message));
+      } else {
+        this.$router.push({ name: "LoginPage" });
+      }
     }
   },
 };
