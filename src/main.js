@@ -13,6 +13,7 @@ console.log(process.env.VUE_APP_API_SERVER_URL);
 if(process.env.NODE_ENV === 'production'){
   // baseURL 기본값을 정의한다
   axios.defaults.baseURL = process.env.VUE_APP_API_SERVER_URL;
+  
   // 모든 요청에 추가할 헤더 설정
   //axios.defaults.headers.common['Authorization'] = 'something';
   // GET 요청에 추가할 헤더 설정
