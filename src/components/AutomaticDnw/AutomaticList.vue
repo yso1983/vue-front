@@ -5,6 +5,9 @@
     sort-by="calories"
     class="elevation-1"
   >
+    <template v-slot:[`item.amount`]="{ item }">
+      <span>{{ item.amount | makeComma }}</span>
+    </template>
     <template v-slot:top>
       <v-toolbar flat>
         <v-toolbar-title>매월 자동 입출금</v-toolbar-title>
@@ -94,9 +97,10 @@
                             v-model="editedItem.amount"
                             :error-messages="errors"
                             label="지출액"
-                            type="number"
+                            type="currency"
                             step=".1"
                             required
+                            @keyup="onBlurNumber"
                           ></v-text-field>
                         </validation-provider>
                       </v-col>
@@ -229,7 +233,7 @@ export default {
     ],
     //automatics: [],
     editedIndex: -1,
-    editedItem: {}
+    editedItem: {},
   }),
 
   computed: {
@@ -267,7 +271,7 @@ export default {
 
   methods: {
     initialize() {
-      this.editedItem =  new autoDetail(
+      this.editedItem = new autoDetail(
         0,
         0,
         0,
@@ -282,7 +286,6 @@ export default {
     },
 
     editItem(item) {
-      
       //this.editedIndex = this.automatics.indexOf(item);
       this.editedItem = Object.assign({}, item);
       this.dialog = true;
@@ -297,7 +300,7 @@ export default {
     deleteItemConfirm() {
       //console.log(this.editedItem);
       AutoService.remove(this.editedItem.id)
-      .then((res) => {
+        .then((res) => {
           if (res) {
             if (res.data.code === "0000") {
               this.getAutomatics();
@@ -347,7 +350,6 @@ export default {
         .catch((err) => {
           alert(err.message);
         });
-
     },
 
     getUsers() {
@@ -403,6 +405,12 @@ export default {
           }
         )
         .catch((err) => alert(err.message));
+    },
+
+    onBlurNumber(){
+      const result = this.editedItem.amount.replace(/\D/g, "").replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+      console.log(result);
+      this.editedItem.amount = result;
     },
   },
 };

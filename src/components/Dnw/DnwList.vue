@@ -69,8 +69,6 @@
 </template>
 
 <script>
-import DnwService from "../../services/dnw.service";
-import dnwDetail from "../../models/dnw.detail";
 
 export default {
   name: "dnwList",

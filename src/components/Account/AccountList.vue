@@ -44,7 +44,8 @@ export default {
   methods: {
     handleClick(value) {
       this.$store.dispatch("global/CHANGE_ACCOUNT", new Account(value.id, value.user_id, value.name
-      , value.amount, value.remark));
+      , value.amount.toString().substring(0, value.amount.toString().indexOf('.')).replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+      , value.remark));
     },
     read() {
       this.loading = true;

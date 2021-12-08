@@ -54,7 +54,7 @@ const routes = [
 //4. 정의한 routes로 Router instance를 생성 합니다.
 //https://stackoverflow.com/questions/47655869/how-to-use-vue-js-with-nginx
 let router = new VueRouter({
-  mode: 'history',
+//  mode: 'history',
   routes,
 });
 

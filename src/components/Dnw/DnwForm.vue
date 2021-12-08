@@ -89,9 +89,10 @@
             v-model="detail.amount"
             :error-messages="errors"
             label="금액"
-            type="number"
+            type="currency"
             step=".1"
             required
+            @keyup="onBlurNumber"
           ></v-text-field>
         </validation-provider>
         <v-textarea
@@ -243,6 +244,12 @@ export default {
     },
     onChange(event) {
       this.getAccounts();
+    },
+
+    onBlurNumber(){
+      const result = this.detail.amount.replace(/\D/g, "").replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+      console.log(result);
+      this.detail.amount = result;
     },
   },
   created() {

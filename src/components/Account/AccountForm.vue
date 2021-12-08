@@ -37,10 +37,11 @@
             v-model="account.amount"
             :error-messages="errors"
             label="잔액"
-            type="number"
-            min="0"
-            step=".1"
+            type="currency"
+            step="1"
+            min="1"
             required
+            @keyup="onBlurNumber"
           ></v-text-field>
         </validation-provider>
         <v-textarea
@@ -116,7 +117,7 @@ export default {
     submit(isReTry) {
       this.$refs.observer.validate();
       AccountService.setAaccount(new Account(this.account.id, this.account.user_id, this.account.name
-      , this.account.amount, this.account.remark)) 
+      , this.account.amount.replace(/,/g, ""), this.account.remark)) 
       .then((res) => {
         if(res){
           
@@ -164,6 +165,10 @@ export default {
           this.users = res.data.data;
         }
       });
+    },
+    onBlurNumber(){
+      const result = this.account.amount.replace(/\D/g, "").replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+      this.account.amount = result;
     },
   },
   created() {
