@@ -84,6 +84,17 @@
             </v-dialog>
           </v-col>
         </v-row>
+        <validation-provider v-slot="{ errors }" name="select_to_accounts" >
+          <v-select
+              v-model="detail.to_account_id"
+              :items="toAccounts"
+              item-text="name"
+              item-value="id"
+              :error-messages="errors"
+              label="Select To Account"
+              data-vv-name="select_to_accounts"
+            ></v-select>
+        </validation-provider>
         <validation-provider v-slot="{ errors }" name="금액" rules="required">
           <v-text-field
             v-model="detail.amount"
@@ -165,6 +176,7 @@ export default {
   data: () => ({
     users: [],
     accounts: [],
+    toAccounts: [],
     //dwnitems: [],
     date: new Date(Date.now() - new Date().getTimezoneOffset() * 60000)
       .toISOString()
@@ -201,7 +213,7 @@ export default {
     clear() {
       this.$store.dispatch(
         "dnw/changeDetail",
-        new dnwDetail(0, 0, 0, this.$store.state.auth.user.id, null, this.date, "")
+        new dnwDetail(0, 0, 0, this.$store.state.auth.user.id, null, this.date, "", 0)
       );
       this.$refs.observer.reset();
     },
@@ -213,11 +225,11 @@ export default {
       });
     },
     getAccounts() {
-      AccountService.getAaccounts(
-        "userid=" + this.$store.state.auth.user.id
-      ).then((res) => {
+      AccountService.getAaccounts()
+      .then((res) => {
         if (res.data && res.data.code === "0000") {
-          this.accounts = res.data.data;
+          this.toAccounts = res.data.data;
+          this.accounts = this.toAccounts.filter(a => a.user_id == this.$store.state.auth.user.id);
         }
       });
     },
@@ -247,8 +259,7 @@ export default {
     },
 
     onBlurNumber(){
-      const result = this.detail.amount.replace(/\D/g, "").replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-      console.log(result);
+      const result = this.detail.amount.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
       this.detail.amount = result;
     },
   },

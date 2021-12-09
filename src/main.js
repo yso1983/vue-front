@@ -7,9 +7,6 @@ import router from "./router/router";
 import axios from "axios";
 import moment from 'moment';
 
-console.log(process.env.NODE_ENV);
-console.log(process.env.VUE_APP_API_SERVER_URL);
-
 if(process.env.NODE_ENV === 'production'){
   // baseURL 기본값을 정의한다
   axios.defaults.baseURL = process.env.VUE_APP_API_SERVER_URL;
