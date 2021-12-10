@@ -9,6 +9,7 @@
         <!-- If using vue-router -->
         <router-view></router-view>
       </v-container>
+      <message-dialog />
     </v-main>
     <main-footer v-if="false" />
   </v-app>
@@ -28,6 +29,7 @@ import Vuex from "vuex";
 import MainLeftMenu from "./shared-components/MainLeftMenu.vue";
 import MainHeader from "./shared-components/MainHeader.vue";
 import MainFooter from "./shared-components/MainFooter.vue";
+import Dialog from "./views/Dialog.vue";
 
 Vue.use(Vuex);
 
@@ -38,6 +40,7 @@ export default {
     "main-header": MainHeader,
     "main-footer": MainFooter,
     "main-leftmenu": MainLeftMenu,
+    "message-dialog": Dialog
   },
   computed: {
     currentUser() {

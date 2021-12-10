@@ -71,7 +71,8 @@ export default {
   methods: {
     handleLogin() {
       if (this.user.email && this.user.password) {
-        this.$store.dispatch("auth/login", this.user).then(
+        this.$store.dispatch("auth/login", this.user)
+        .then(
           () => {
             this.$store.state.global.subtitle = "Chart";
             this.$router.push({ name: "Chart" });
@@ -86,8 +87,12 @@ export default {
               (error.response && error.response.data) ||
               error.message ||
               error.toString();
+
+            console.log(this.message);
+              this.$store.dispatch("global/OPEN_DIALOG", this.message.message);
           }
-        );
+        ).catch(err => console.log(err));
+        
       }
     },
   },

@@ -6,7 +6,11 @@ export const global = {
     drawer: false,
     account: new Account(0, 0),
     accounts: [],
-    subtitle: ""
+    subtitle: "",
+    messageDialog: {
+      dialog: false,
+      message: ""
+    }
   },
   // getters: {
   //   user:(state) => {return state.user;}
@@ -20,6 +24,14 @@ export const global = {
     },
     CHANGE_SUBTITLE(state, subtitle){
       state.subtitle = subtitle;
+    },
+    OPEN_DIALOG(state, message){
+      state.messageDialog.dialog = true;
+      state.messageDialog.message = message;
+    },
+    CLOSE_DIALOG(state){
+      state.messageDialog.dialog = false;
+      state.messageDialog.message = '';
     },
   },
   actions: {
@@ -41,5 +53,16 @@ export const global = {
     CHANGE_SUBTITLE({commit}, subtitle){
        commit('CHANGE_SUBTITLE', subtitle);
     },
+    OPEN_DIALOG({commit}, message){
+       commit('OPEN_DIALOG', message);
+    },
+    CLOSE_DIALOG({commit}){
+       commit('CLOSE_DIALOG');
+    },
+  },
+  getters: {
+    dialog(state) {
+      return state.messageDialog;
+    }
   }
 };
