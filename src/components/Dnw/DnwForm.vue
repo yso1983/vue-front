@@ -259,7 +259,7 @@ export default {
     },
 
     onBlurNumber(){
-      const result = this.detail.amount.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+      const result = this.detail.amount.replace(/\,/g, "").replace(/\B(?=(\d{3})+(?!\d))/g, ",");
       this.detail.amount = result;
     },
   },

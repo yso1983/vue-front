@@ -408,7 +408,7 @@ export default {
     },
 
     onBlurNumber(){
-      const result = this.editedItem.amount.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+      const result = this.editedItem.amount.replace(/\,/g, "").replace(/\B(?=(\d{3})+(?!\d))/g, ",");
       this.editedItem.amount = result;
     },
   },
