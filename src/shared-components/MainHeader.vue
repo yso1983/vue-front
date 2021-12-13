@@ -39,6 +39,10 @@ export default {
   data: () => ({
     items: [
       {
+        icon: "mdi-account",
+        text: "Profile",
+      },
+      {
         icon: "mdi-account-outline",
         text: "Logout",
       },
@@ -49,6 +53,9 @@ export default {
       if (text == "Logout") {
         this.$store.dispatch("auth/logout");
         this.$router.push({ name: "LoginPage" });
+      }
+      else{
+        this.$router.push({ name: text });
       }
     },
   },

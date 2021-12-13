@@ -1,12 +1,13 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
-import Dashbord from "../views/Dashbord";
+import Home from "../views/Home";
 import Chart from "../views/Chart";
 import Cate from "../views/Cate";
 import Account from "../views/Account";
 import Login from "../views/Login";
 import Dnw from "../views/Dnw";
 import autoDnw from "../views/AutomaticDnw";
+import profile from "../views/UserProfile";
 
 //2.Route 에서 사용 할 Component 정의
 Vue.use(VueRouter);
@@ -21,7 +22,7 @@ const routes = [
   {
     path: "/home",
     name: "Home",
-    component: Dashbord,
+    component: Home,
   },
   {
     path: "/chart",
@@ -48,7 +49,12 @@ const routes = [
     name: "AutomaricD&W",
     component: autoDnw,
   },
-  { path: "*", redirect: "/chart" },
+  {
+    path: "/profile",
+    name: "Profile",
+    component: profile,
+  },
+  { path: "*", redirect: "/home" },
 ];
 
 //4. 정의한 routes로 Router instance를 생성 합니다.

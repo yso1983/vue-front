@@ -93,6 +93,7 @@
               :error-messages="errors"
               label="Select To Account"
               data-vv-name="select_to_accounts"
+              clearable
             ></v-select>
         </validation-provider>
         <validation-provider v-slot="{ errors }" name="금액" rules="required">
