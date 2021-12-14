@@ -1,9 +1,10 @@
 import AuthService from '../services/auth.service';
 
 const user = JSON.parse(localStorage.getItem('user'));
+
 const initialState = user
-  ? { status: { loggedIn: true }, user }
-  : { status: { loggedIn: false }, user: null };
+  ? { status: { loggedIn: true, selectedGroupId: true }, user, groups: [] }
+  : { status: { loggedIn: false, selectedGroupId: false }, user: null, groups: [] };
 
 export const auth = {
   namespaced: true,
@@ -12,6 +13,12 @@ export const auth = {
     login({ commit }, user) {
       return AuthService.login(user).then(
         user => {
+
+          let groups  = user.groups;
+          if(groups && groups.length == 1){
+            commit('groupSuccess', groups[0].id);
+          }
+
           commit('loginSuccess', user);
           return Promise.resolve(user);
         },
@@ -65,6 +72,12 @@ export const auth = {
           return Promise.reject(error);
         }
       );
+    },
+    setGroups({commit}, groups){
+      commit('setGroups', groups);
+    }, 
+    selectGroupId({commit}){
+      commit('selectGroupId');
     }
   },
   mutations: {
@@ -78,7 +91,9 @@ export const auth = {
     },
     logout(state) {
       state.status.loggedIn = false;
+      state.status.selectedGroupId = false;
       state.user = null;
+      state.groups = [];
     },
     registerSuccess(state) {
       state.status.loggedIn = false;
@@ -90,6 +105,16 @@ export const auth = {
       state.status.loggedIn = true;
       state.user.accessToken = tokens.accessToken;
       state.user.refreshToken = tokens.refreshToken;
-    }
+    },
+    groupSuccess(state, groupid) {
+      state.status.selectedGroupId = true;
+      localStorage.setItem("groupid", groupid);
+    },
+    setGroups(state, groups){
+      state.groups = groups;
+    },
+    selectGroupId(state){
+      state.status.selectedGroupId = true;
+    },
   }
 };

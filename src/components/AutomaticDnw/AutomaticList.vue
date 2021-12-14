@@ -107,7 +107,7 @@
                       <v-col cols="12" sm="6" md="4">
                         <validation-provider
                           v-slot="{ errors }"
-                          name="지출액"
+                          name="기준일"
                           rules="required"
                         >
                           <v-text-field

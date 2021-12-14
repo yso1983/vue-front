@@ -19,7 +19,7 @@
 
       <v-list>
         <v-list-item
-          v-for="(item, i) in items"
+          v-for="(item, i) in itemFilter()"
           :key="i"
           @click="itemOnClick(item.text)"
         >
@@ -38,6 +38,10 @@ export default {
   name: "main-header",
   data: () => ({
     items: [
+      {
+        icon: "mdi-group",
+        text: "Group",
+      },
       {
         icon: "mdi-account",
         text: "Profile",
@@ -58,6 +62,16 @@ export default {
         this.$router.push({ name: text });
       }
     },
+    itemFilter(){
+      const cnt = this.$store.state.auth.groups.length;
+      console.log(cnt);
+      return this.items.filter(x => {
+        console.log(x);
+        if(!(x.text == "Group" && cnt < 2)){
+          return x;
+        }
+      });
+    }
   },
 };
 </script>

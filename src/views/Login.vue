@@ -62,48 +62,71 @@ export default {
     loggedIn() {
       return this.$store.state.auth.status.loggedIn;
     },
+    selectedGroupId() {
+      return this.$store.state.auth.status.selectedGroupId;
+    },
   },
   created() {
     if (this.loggedIn) {
-      this.$router.push({ name: "Chart" });
+      this.$router.push({ name: "Home" });
     }
   },
   methods: {
     handleLogin() {
       if (this.user.email && this.user.password) {
-        this.$store.dispatch("auth/login", this.user)
-        .then(
-          () => {
-            this.$store.state.global.subtitle = "Chart";
-            this.$router.push({ name: "Chart" });
-            if(this.checkbox)
-              localStorage.setItem("loginEmail", this.user.email);
-            else 
-              localStorage.removeItem('loginEmail');
-          },
-          (error) => {
-            this.loading = false;
-            this.message =
-              (error.response && error.response.data) ||
-              error.message ||
-              error.toString();
+        this.$store
+          .dispatch("auth/login", this.user)
+          .then(
+            (res) => {
 
-            console.log(this.message);
+              if (this.checkbox)
+                localStorage.setItem("loginEmail", this.user.email);
+              else localStorage.removeItem("loginEmail");
+
+              let { groups } = res;
+
+              if (groups != null && groups.length > 0) {
+                if (groups.length > 1) {
+                  this.$store.dispatch("auth/setGroups", groups);
+                  this.$router.push({ name: "Group" });
+                }
+                else{
+
+                  this.$store.state.global.subtitle = "Home";
+                  this.$router.push({ name: "Home" });
+                }
+
+              } else {
+                this.$store.dispatch(
+                  "global/OPEN_DIALOG",
+                  "소속된 그룹이 없습니다."
+                );
+              }
+            },
+            (error) => {
+              this.loading = false;
+              this.message =
+                (error.response && error.response.data) ||
+                error.message ||
+                error.toString();
+
+              //console.log(this.message);
               this.$store.dispatch("global/OPEN_DIALOG", this.message.message);
-          }
-        ).catch(err => console.log(err));
-        
+            }
+          )
+          .catch(err => {
+            this.$store.dispatch("global/OPEN_DIALOG", err.message);
+          });
       }
     },
   },
-  mounted(){
+  mounted() {
     let loginEmail = localStorage.getItem("loginEmail");
-    if(loginEmail)
-    {
+    if (loginEmail) {
       this.checkbox = true;
       this.user = new User("", "", loginEmail, "");
     }
-  }
+  },
 };
 </script>
 

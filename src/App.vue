@@ -1,7 +1,7 @@
 <template>
   <v-app id="app">
-    <main-leftmenu v-if="currentUser" />
-    <main-header v-if="currentUser" />
+    <main-leftmenu v-if="currentUser && selectedGroup" />
+    <main-header v-if="currentUser && selectedGroup" />
     <!-- Sizes your content based upon application components -->
     <v-main>
       <!-- Provides the application the proper gutter -->
@@ -46,6 +46,9 @@ export default {
     currentUser() {
       //console.log(this.$store.state.auth.user);
       return this.$store.state.auth.user;
+    },
+    selectedGroup() {
+      return this.$store.state.auth.status.selectedGroupId;
     },
   },
   methods: {

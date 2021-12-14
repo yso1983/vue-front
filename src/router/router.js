@@ -6,8 +6,9 @@ import Cate from "../views/Cate";
 import Account from "../views/Account";
 import Login from "../views/Login";
 import Dnw from "../views/Dnw";
-import autoDnw from "../views/AutomaticDnw";
-import profile from "../views/UserProfile";
+import AutoDnw from "../views/AutomaticDnw";
+import Profile from "../views/UserProfile";
+import Group from "../views/SelectGroup";
 
 //2.Route 에서 사용 할 Component 정의
 Vue.use(VueRouter);
@@ -47,13 +48,19 @@ const routes = [
   {
     path: "/automaricDnw",
     name: "AutomaricD&W",
-    component: autoDnw,
+    component: AutoDnw,
   },
   {
     path: "/profile",
     name: "Profile",
-    component: profile,
+    component: Profile,
   },
+  {
+    path: "/group",
+    name: "Group",
+    component: Group,
+  },
+  
   { path: "*", redirect: "/home" },
 ];
 
