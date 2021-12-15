@@ -1,5 +1,5 @@
 <template>
-  <v-card class="mx-auto text-center" dark app>
+  <v-card class="mx-auto text-center" app>
     <validation-observer ref="observer" v-slot="{ invalid }">
       <form @submit.prevent="submit(false)">
         <input type="hidden" v-model="account.id">

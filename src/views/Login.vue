@@ -87,7 +87,6 @@ export default {
 
               if (groups != null && groups.length > 0) {
                 if (groups.length > 1) {
-                  this.$store.dispatch("auth/setGroups", groups);
                   this.$router.push({ name: "Group" });
                 }
                 else{

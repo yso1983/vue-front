@@ -1,5 +1,5 @@
 <template>
-  <v-card id="dnw_list" class="mx-auto text-center mt-2" dark app>
+  <v-card id="dnw_list" class="mx-auto text-center mt-2" app>
     <v-card-title>
       <v-row>
         <v-col cols="12" sm="12" class="pb-0">

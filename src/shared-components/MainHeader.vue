@@ -64,9 +64,7 @@ export default {
     },
     itemFilter(){
       const cnt = this.$store.state.auth.groups.length;
-      console.log(cnt);
       return this.items.filter(x => {
-        console.log(x);
         if(!(x.text == "Group" && cnt < 2)){
           return x;
         }

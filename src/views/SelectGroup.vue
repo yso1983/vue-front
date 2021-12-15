@@ -47,7 +47,6 @@ export default {
       if (this.groupid) {
         localStorage.setItem("groupid", this.groupid);
 				this.$store.dispatch("auth/selectGroupId");
-				
 
         this.$store.state.global.subtitle = "Home";
         this.$router.push({ name: "Home" });

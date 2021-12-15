@@ -3,7 +3,7 @@ import AuthService from '../services/auth.service';
 const user = JSON.parse(localStorage.getItem('user'));
 
 const initialState = user
-  ? { status: { loggedIn: true, selectedGroupId: true }, user, groups: [] }
+  ? { status: { loggedIn: true, selectedGroupId: true }, user, groups: user?.groups }
   : { status: { loggedIn: false, selectedGroupId: false }, user: null, groups: [] };
 
 export const auth = {
@@ -109,9 +109,6 @@ export const auth = {
     groupSuccess(state, groupid) {
       state.status.selectedGroupId = true;
       localStorage.setItem("groupid", groupid);
-    },
-    setGroups(state, groups){
-      state.groups = groups;
     },
     selectGroupId(state){
       state.status.selectedGroupId = true;
