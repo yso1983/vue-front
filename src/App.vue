@@ -69,6 +69,7 @@ export default {
                   this.$store.dispatch("auth/refresh").then(
                     () => {
                       console.log('refresh token!');
+                      this.$router.go();
                     },
                     (error) => {
                       this.logout();

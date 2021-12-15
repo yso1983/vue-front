@@ -3,7 +3,7 @@ import AuthService from '../services/auth.service';
 const user = JSON.parse(localStorage.getItem('user'));
 
 const initialState = user
-  ? { status: { loggedIn: true, selectedGroupId: true }, user, groups: user?.groups }
+  ? { status: { loggedIn: true, selectedGroupId: true }, user, groups: user.groups }
   : { status: { loggedIn: false, selectedGroupId: false }, user: null, groups: [] };
 
 export const auth = {
@@ -15,6 +15,7 @@ export const auth = {
         user => {
 
           let groups  = user.groups;
+
           if(groups && groups.length == 1){
             commit('groupSuccess', groups[0].id);
           }
@@ -73,9 +74,6 @@ export const auth = {
         }
       );
     },
-    setGroups({commit}, groups){
-      commit('setGroups', groups);
-    }, 
     selectGroupId({commit}){
       commit('selectGroupId');
     }
@@ -84,6 +82,7 @@ export const auth = {
     loginSuccess(state, user) {
       state.status.loggedIn = true;
       state.user = user;
+      state.groups = user.groups;
     },
     loginFailure(state) {
       state.status.loggedIn = false;
