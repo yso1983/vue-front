@@ -77,14 +77,16 @@ export default {
           let data = res.data.data;
           if (!(data && data.length > 0)) return;
 
-          this.items.unshift({
+          this.items.push({
             title: "총 자산",
             number: this.getCurrency(
-              data.reduce(
-                (previousValue, currentValue) =>
-                  parseFloat(previousValue.amount) +
-                  parseFloat(currentValue.amount)
-              )
+              data.reduce((previousValue, currentValue) => {
+                return {
+                  amount:
+                    parseFloat(previousValue.amount) +
+                    parseFloat(currentValue.amount),
+                };
+              }).amount
             ),
             tIcon: "mdi-list",
             tIconColor: "success",
