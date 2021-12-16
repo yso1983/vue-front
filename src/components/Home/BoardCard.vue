@@ -89,7 +89,7 @@ export default {
   },
   methods: {
     getList() {
-      DnwService.getPagingDetails(1, 5).then((res) => {
+      DnwService.getPagingDetails(1, 10).then((res) => {
         if (res.data && res.data.code === "0000") {
           let list = res.data.data;
           let headerDate = "";
@@ -108,7 +108,7 @@ export default {
               subtitle: `<span class="text--primary">${
                 e.dnw_item.name
               } ${this.getCurrency(parseFloat(e.amount))} 원</span> ${
-                e.remark !== "" ? "&mdash; 매월 자동 지출" : ""
+                e.remark !== "" ? "&mdash; " + e.remark : ""
               }`,
               color: parseFloat(e.amount) > 0 ? "success" : "error", 
               tag: parseFloat(e.amount) > 0 ? "mdi-plus" : "mdi-minus", 
