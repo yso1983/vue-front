@@ -10,21 +10,20 @@
             item-text="name"
             item-value="id"
             :error-messages="errors"
-            label="Select Users"
             data-vv-name="select"
             required
           ></v-select>
         </validation-provider>
         <validation-provider
           v-slot="{ errors }"
-          name="항목"
+          name="계좌"
           rules="required|max:25"
         >
           <v-text-field
             v-model="account.name"
             :counter="25"
             :error-messages="errors"
-            label="항목"
+            label="계좌"
             required
           ></v-text-field>
         </validation-provider>

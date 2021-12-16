@@ -47,11 +47,10 @@
 
     <v-data-table
       id="dnw_details"
-      style="width: 98%"
       item-key="id"
       :headers="headers"
       :items="details"
-      :items-per-page="10"
+      :items-per-page="15"
       :search="search"
       :loading="loading"
       loading-text="Loading... Please wait"

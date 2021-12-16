@@ -41,7 +41,6 @@
                             item-text="name"
                             item-value="id"
                             :error-messages="errors"
-                            label="Select Users"
                             required
                             disabled
                           ></v-select>
@@ -59,7 +58,7 @@
                             item-text="name"
                             item-value="id"
                             :error-messages="errors"
-                            label="Select Account"
+                            label="계좌"
                             data-vv-name="select_accounts"
                             required
                           ></v-select>
@@ -77,7 +76,7 @@
                             item-text="name"
                             item-value="id"
                             :error-messages="errors"
-                            label="Select Items"
+                            label="항목"
                             data-vv-name="select_items"
                             required
                           ></v-select>
@@ -90,13 +89,13 @@
                       <v-col cols="12" sm="6" md="4">
                         <validation-provider
                           v-slot="{ errors }"
-                          name="지출액"
+                          name="금액"
                           rules="required"
                         >
                           <v-text-field
                             v-model="editedItem.amount"
                             :error-messages="errors"
-                            label="지출액"
+                            label="금액"
                             type="currency"
                             step=".1"
                             required
@@ -226,8 +225,8 @@ export default {
         value: "user_name",
       },
       { text: "계좌", value: "account_name" },
-      { text: "지출항목", value: "dnw_item_name" },
-      { text: "지출액", value: "amount" },
+      { text: "항목", value: "dnw_item_name" },
+      { text: "금액", value: "amount" },
       { text: "기준일", value: "day" },
       { text: "수정/삭제", value: "actions", sortable: false },
     ],

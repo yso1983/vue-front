@@ -31,7 +31,7 @@
             item-text="name"
             item-value="id"
             :error-messages="errors"
-            label="Select Account"
+            label="계좌를 선택하세요!"
             data-vv-name="select_accounts"
             required
           ></v-select>
@@ -49,7 +49,7 @@
                 item-text="name"
                 item-value="id"
                 :error-messages="errors"
-                label="Select Items"
+                label="항목을 선택하세요!"
                 data-vv-name="select_items"
                 required
               ></v-select>
@@ -69,7 +69,7 @@
               <template v-slot:activator="{ on, attrs }">
                 <v-text-field
                   v-model="detail.standard_dt"
-                  label="Picker in dialog"
+                  label="기준일자"
                   prepend-icon="mdi-calendar"
                   readonly
                   v-bind="attrs"
@@ -84,18 +84,6 @@
             </v-dialog>
           </v-col>
         </v-row>
-        <validation-provider v-slot="{ errors }" name="select_to_accounts" >
-          <v-select
-              v-model="detail.to_account_id"
-              :items="toAccounts"
-              item-text="name"
-              item-value="id"
-              :error-messages="errors"
-              label="Select To Account"
-              data-vv-name="select_to_accounts"
-              clearable
-            ></v-select>
-        </validation-provider>
         <validation-provider v-slot="{ errors }" name="금액" rules="required">
           <v-text-field
             v-model="detail.amount"
@@ -106,6 +94,18 @@
             required
             @keyup="onBlurNumber"
           ></v-text-field>
+        </validation-provider>
+        <validation-provider v-slot="{ errors }" name="select_to_accounts" >
+          <v-select
+              v-model="detail.to_account_id"
+              :items="toAccounts"
+              item-text="name"
+              item-value="id"
+              :error-messages="errors"
+              label="받을 계좌 선택하세요!"
+              data-vv-name="select_to_accounts"
+              clearable
+            ></v-select>
         </validation-provider>
         <v-textarea
           solo

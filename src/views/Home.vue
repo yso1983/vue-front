@@ -59,6 +59,7 @@ import boardCard from "@/components/Home/BoardCard";
 
 import AccountService from "@/services/account.service";
 import HomeService from "@/services/home.service";
+import DnwService from "@/services/dnw.service";
 
 export default {
   components: {
@@ -97,14 +98,22 @@ export default {
 
           let nhAccount = data.filter((acc) => acc.name.indexOf("농협") > -1);
           if (nhAccount && nhAccount.length > 0) {
-            this.items.push({
-              title: "농협 통장",
-              number: this.getCurrency(parseFloat(nhAccount[0].amount)),
-              tIcon: "mdi-list",
-              tIconColor: "success",
-              bIcon: "mdi-plus",
-              bIconColor: "success",
-              bText: "",
+
+            DnwService.getTotalAmountbyMonthAndAccountId('last', nhAccount[0].id).then(result => {
+              if (result.data && result.data.code === "0000") {
+                let account = result.data.data;
+                //console.log(account);
+                this.items.push({
+                  title: nhAccount[0].name,
+                  number: this.getCurrency(parseFloat(nhAccount[0].amount)),
+                  tIcon: "mdi-list",
+                  tIconColor: "success",
+                  bIcon: "mdi-plus",
+                  bIconColor: "success",
+                  bText: this.getCurrency(parseFloat(account.total ?? 0)),
+                });
+              }
+              
             });
           }
         }
@@ -120,7 +129,7 @@ export default {
 
             let thisMonth = data.filter((d) => d.thisYearMonth === d.yearMonth);
             let preMonth = data.filter((d) => d.thisYearMonth !== d.yearMonth);
-            console.log(thisMonth, preMonth);
+            //console.log(thisMonth, preMonth);
             let thisMonthAmount =
               thisMonth && thisMonth.length > 0
                 ? parseFloat(thisMonth[0].total)

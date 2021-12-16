@@ -4,7 +4,7 @@
     style="width: 98%"
     :headers="headers"
     :items="accounts"
-    :items-per-page="10"
+    :items-per-page="15"
     item-key="id"
     :loading="loading"
     class="elevation-1 ml-3 mr-3"
@@ -30,9 +30,9 @@ export default {
         sortable: false,
         value: "user_name",
       },
-      { text: "항목", value: "name" },
-      { text: "비고", value: "remark" },
+      { text: "계좌", value: "name" },
       { text: "잔액", value: "amount" },
+      { text: "비고", value: "remark" },
     ],
   }),
   computed: {

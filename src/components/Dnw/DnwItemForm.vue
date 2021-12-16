@@ -22,7 +22,7 @@
                     <v-text-field
                       v-model="currentItem.name"
                       :error-messages="errors"
-                      label="item name*"
+                      label="항목 * "
                       hint="지출 항목 명을 입력하세요."
                       name="항목"
                       persistent-hint

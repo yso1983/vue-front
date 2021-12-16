@@ -23,6 +23,14 @@ class DnwService {
   getDnwChartLastFewDays(params) {
     return axios.get(API_URL + params + '/chart', { headers: authHeader() });
   }
+
+  getTotalAmountbyMonthAndAccountId(params, accountId) {
+    return axios.get(API_URL + params + '/amount?accountId=' + accountId, { headers: authHeader() });
+  }
+
+  getPagingDetails(page, limit) {
+    return axios.get(API_URL + `details?page=${page}&limit=${limit}`, { headers: authHeader() });
+  }
 }
 
 export default new DnwService();

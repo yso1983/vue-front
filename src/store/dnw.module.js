@@ -65,7 +65,8 @@ export const dnw = {
       state.items = items;
     },
     setItem(state, item) {
-      state.items.push(item);
+      state.items.unshift(item);
+      state.detail.dnw_item_id = item.id;
     },
     details(state, details) {
       state.details = details.map((obj) => {
