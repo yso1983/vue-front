@@ -36,6 +36,9 @@
               <v-spacer></v-spacer>
               <v-btn @click="handleLogin()">Login</v-btn>
             </v-card-actions>
+            <v-card-actions>
+              <v-img :src="kakaoImg" class="ma-2" @click="kakaoLogin"></v-img>
+            </v-card-actions>
           </v-card>
         </v-flex>
       </v-layout>
@@ -57,6 +60,7 @@ export default {
       loading: false,
       message: "",
       checkbox: false,
+      kakaoImg: process.env.BASE_URL + "kakao_login_medium_wide.png",
     };
   },
   computed: {
@@ -79,7 +83,6 @@ export default {
           .dispatch("auth/login", this.user)
           .then(
             (res) => {
-
               if (this.checkbox)
                 localStorage.setItem("loginEmail", this.user.email);
               else localStorage.removeItem("loginEmail");
@@ -89,13 +92,10 @@ export default {
               if (groups != null && groups.length > 0) {
                 if (groups.length > 1) {
                   this.$router.push({ name: "Group" });
-                }
-                else{
-
+                } else {
                   this.$store.state.global.subtitle = "Home";
                   this.$router.push({ name: "Home" });
                 }
-
               } else {
                 this.$store.dispatch(
                   "global/OPEN_DIALOG",
@@ -114,10 +114,69 @@ export default {
               this.$store.dispatch("global/OPEN_DIALOG", this.message.message);
             }
           )
-          .catch(err => {
+          .catch((err) => {
             this.$store.dispatch("global/OPEN_DIALOG", err.message);
           });
       }
+    },
+    kakaoLogin() {
+      // console.log(window.Kakao);
+      window.Kakao.Auth.login({
+        scope: "account_email, profile_nickname",
+        success: this.GetMe,
+      });
+    },
+    GetMe(authObj) {
+      // console.log(authObj);
+      window.Kakao.API.request({
+        url: "/v2/user/me",
+        success: (res) => {
+          const kakao_account = res.kakao_account;
+          const userInfo = {
+            email: kakao_account.email,
+            password: "",
+            login_type: "KAKAO",
+            //nickname: kakao_account.profile.nickname,
+          };
+
+          this.$store.dispatch("auth/login", userInfo).then(
+            (res) => {
+              let { groups } = res;
+
+              if (groups != null && groups.length > 0) {
+                if (groups.length > 1) {
+                  this.$router.push({ name: "Group" });
+                } else {
+                  this.$store.state.global.subtitle = "Home";
+                  this.$router.push({ name: "Home" });
+                }
+              } else {
+                this.$store.dispatch(
+                  "global/OPEN_DIALOG",
+                  "소속된 그룹이 없습니다."
+                );
+              }
+            },
+            (error) => {
+              this.loading = false;
+              this.message =
+                (error.response && error.response.data) ||
+                error.message ||
+                error.toString();
+
+              //console.log(this.message);
+              this.$store.dispatch("global/OPEN_DIALOG", this.message.message);
+            }
+          );
+
+          //console.log(userInfo);
+          //alert("로그인 성공!");
+        },
+        fail: (err) => {
+          console.log(err);
+          this.$store.dispatch("global/OPEN_DIALOG", err.message);
+        },
+      });
     },
   },
   mounted() {

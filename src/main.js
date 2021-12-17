@@ -32,6 +32,8 @@ Vue.filter('formatDate', function(value) {
   }
 });
 
+window.Kakao.init("565e654ade3f6c2feff20186fcfed108");
+
 new Vue({
   vuetify,
   router: router,
