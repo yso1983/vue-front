@@ -23,6 +23,7 @@
                   label="Password"
                   type="password"
                   v-model="user.password"
+                  @keyup.enter="handleLogin"
                 ></v-text-field>
               </v-form>
             </v-card-text>
