@@ -61,12 +61,12 @@ export default {
         title: "Home",
         pagePath: "./home",
       },
-      {
-        icon: "mdi-inbox",
-        text: "Chart",
-        title: "Chart",
-        pagePath: "./chart",
-      },
+      // {
+      //   icon: "mdi-inbox",
+      //   text: "Chart",
+      //   title: "Chart",
+      //   pagePath: "./chart",
+      // },
       {
         icon: "mdi-table-cog",
         text: "Account",

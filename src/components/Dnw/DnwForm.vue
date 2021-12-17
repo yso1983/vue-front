@@ -84,17 +84,40 @@
             </v-dialog>
           </v-col>
         </v-row>
-        <validation-provider v-slot="{ errors }" name="금액" rules="required">
-          <v-text-field
-            v-model="detail.amount"
-            :error-messages="errors"
-            label="금액"
-            type="currency"
-            step=".1"
-            required
-            @keyup="onBlurNumber"
-          ></v-text-field>
-        </validation-provider>
+        <v-row>
+          <v-col cols="12" md="1" sm="2">
+            <validation-provider
+              v-slot="{ errors }"
+              name="입출금 종류"
+              rules="required"
+            >
+              <v-select
+                v-model="kind"
+                :items="kinds"
+                item-text="name"
+                item-value="id"
+                :error-messages="errors"
+                label="입출금 종류"
+                data-vv-name="select_kind"
+                required
+              ></v-select>
+            </validation-provider>
+          </v-col>
+          <v-col cols="12" md="11" sm="10">
+           <validation-provider v-slot="{ errors }" name="금액" rules="required">
+            <v-text-field
+              v-model="detail.amount"
+              :error-messages="errors"
+              label="금액"
+              type="currency"
+              step=".1"
+              required
+              @keyup="onBlurNumber"
+              ></v-text-field>
+            </validation-provider>
+          </v-col>
+        </v-row>
+       
         <validation-provider v-slot="{ errors }" name="select_to_accounts" >
           <v-select
               v-model="detail.to_account_id"
@@ -183,12 +206,22 @@ export default {
       .toISOString()
       .substr(0, 10),
     menu2: false,
+    kind: null, 
+    kinds: [
+      {id: -1, name: "출금"},
+      {id: 1, name: "입금"}
+    ],
   }),
   computed: {
     ...mapGetters("dnw", ["items"]),
     detail() {
       return this.$store.state.dnw.detail;
     },
+  },
+  watch:{
+    kind: function () {
+      this.onBlurNumber();
+    }
   },
   methods: {
     initialize(){
@@ -212,6 +245,7 @@ export default {
         });
     },
     clear() {
+      this.kind = null;
       this.$store.dispatch(
         "dnw/changeDetail",
         new dnwDetail(0, 0, 0, this.$store.state.auth.user.id, null, this.date, "", 0)
@@ -260,8 +294,13 @@ export default {
     },
 
     onBlurNumber(){
-      const result = this.detail.amount.replace(/,/g, "").replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-      this.detail.amount = result;
+      if(this.detail.amount){
+        let kind = parseFloat(this.kind??1);
+        let amount =  "" + kind * parseFloat(this.detail.amount.replace(/\D/g, ""));
+
+        const result = amount.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        this.detail.amount = result;
+      }
     },
   },
   created() {

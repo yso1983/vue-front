@@ -95,7 +95,7 @@ export default {
           let headerDate = "";
 
           list.forEach((e) => {
-            console.log(e);
+            //console.log(e);
 
             let date = moment(String(e.standard_dt)).format("YYYY-MM-DD");
             if (headerDate !== date) {
@@ -108,7 +108,7 @@ export default {
               subtitle: `<span class="text--primary">${
                 e.dnw_item.name
               } ${this.getCurrency(parseFloat(e.amount))} 원</span> ${
-                e.remark !== "" ? "&mdash; " + e.remark : ""
+                e.remark && e.remark !== "" ? "&mdash; " + e.remark : ""
               }`,
               color: parseFloat(e.amount) > 0 ? "success" : "error", 
               tag: parseFloat(e.amount) > 0 ? "mdi-plus" : "mdi-minus", 

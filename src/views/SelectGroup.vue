@@ -39,8 +39,7 @@ export default {
   },
   computed: {
     groups() {
-      console.log(this.$store.state.auth.groups);
-
+      //console.log(this.$store.state.auth.groups);
       return this.$store.state.auth.groups;
     },
   },
