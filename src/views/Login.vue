@@ -104,6 +104,7 @@ export default {
               }
             },
             (error) => {
+              console.log(error.response);
               this.loading = false;
               this.message =
                 (error.response && error.response.data) ||
@@ -165,7 +166,7 @@ export default {
                 error.toString();
 
               //console.log(this.message);
-              this.$store.dispatch("global/OPEN_DIALOG", this.message.message);
+              this.$store.dispatch("global/OPEN_DIALOG", this.message);
             }
           );
 

@@ -3,8 +3,8 @@ import AuthService from '../services/auth.service';
 const user = JSON.parse(localStorage.getItem('user'));
 
 const initialState = user
-  ? { status: { loggedIn: true, selectedGroupId: true }, user, groups: user.groups }
-  : { status: { loggedIn: false, selectedGroupId: false }, user: null, groups: [] };
+  ? { status: { loggedIn: true, selectedGroupId: true, isAdmin: user.roles.filter(r => r === "ROLE_ADMIN").length > 0 }, user, groups: user.groups }
+  : { status: { loggedIn: false, selectedGroupId: false, isAdmin: false }, user: null, groups: [] };
 
 export const auth = {
   namespaced: true,
@@ -83,16 +83,21 @@ export const auth = {
       state.status.loggedIn = true;
       state.user = user;
       state.groups = user.groups;
+      state.status.isAdmin = user.roles.filter(r => r === "ROLE_ADMIN");
     },
     loginFailure(state) {
       state.status.loggedIn = false;
+      state.status.selectedGroupId = false;
       state.user = null;
+      state.groups = [];
+      state.status.isAdmin = false;
     },
     logout(state) {
       state.status.loggedIn = false;
       state.status.selectedGroupId = false;
       state.user = null;
       state.groups = [];
+      state.status.isAdmin = false;
     },
     registerSuccess(state) {
       state.status.loggedIn = false;

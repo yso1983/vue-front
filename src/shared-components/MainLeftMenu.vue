@@ -2,27 +2,24 @@
   <v-navigation-drawer v-model="$store.state.global.drawer" app>
     <!--  color="grey lighten-4" -->
     <v-sheet color="grey" class="pa-4">
-    <v-row dense>
-      <v-col cols="4">
-        <v-avatar color="indigo mb-2">
-        <v-icon dark>
-          mdi-account-circle
-        </v-icon>
-        </v-avatar>
-        <div>Hi {{ currentUser.name }}</div>
-      </v-col>
-      <v-col cols="8">
-        <v-toolbar flat height="auto" class="pa-4 mx-lg-auto grey">
-          <v-switch
-            v-model="$vuetify.theme.dark"
-            inset
-            hide-details
-            label="Theme Dark"
-          ></v-switch>
-        </v-toolbar>
-      </v-col>
-    </v-row>
-      
+      <v-row dense>
+        <v-col cols="4">
+          <v-avatar color="indigo mb-2">
+            <v-icon dark> mdi-account-circle </v-icon>
+          </v-avatar>
+          <div>Hi {{ currentUser.name }}</div>
+        </v-col>
+        <v-col cols="8">
+          <v-toolbar flat height="auto" class="pa-4 mx-lg-auto grey">
+            <v-switch
+              v-model="$vuetify.theme.dark"
+              inset
+              hide-details
+              label="Theme Dark"
+            ></v-switch>
+          </v-toolbar>
+        </v-col>
+      </v-row>
     </v-sheet>
     <v-divider></v-divider>
 
@@ -30,7 +27,7 @@
       <v-list>
         <v-list-item-group v-model="model" mandatory color="indigo">
           <v-list-item
-            v-for="(item, i) in items"
+            v-for="(item, i) in menuItems"
             :key="i"
             :to="{ path: item.pagePath }"
             @click="menuActionClick(item.title)"
@@ -50,7 +47,6 @@
 </template>
  
 <script>
-
 export default {
   name: "main-leftmenu",
   data: () => ({
@@ -85,18 +81,30 @@ export default {
         title: "Automaric Deposit & Withdrawal",
         pagePath: "./automaricDnw",
       },
-      // {
-      //   icon: "mdi-chart-donut",
-      //   text: "Data Usage",
-      //   pagePath: "./Home",
-      // },
+      {
+        icon: "mdi-account-multiple",
+        text: "Users",
+        title: "User Accounts",
+        pagePath: "./users",
+      },
     ],
     model: 0,
   }),
   computed: {
     currentUser() {
       return this.$store.state.auth.user;
-    }
+    },
+    menuItems() {
+      return this.items.filter((i) => {
+        if (i.text === "Users") {
+          if (this.$store.state.auth.status.isAdmin) {
+            return i;
+          }
+        } else {
+          return i;
+        }
+      });
+    },
   },
   methods: {
     menuActionClick(text) {

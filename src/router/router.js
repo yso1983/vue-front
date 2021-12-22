@@ -9,6 +9,7 @@ import Dnw from "../views/Dnw";
 import AutoDnw from "../views/AutomaticDnw";
 import Profile from "../views/UserProfile";
 import Group from "../views/SelectGroup";
+import Users from "../views/Users";
 
 //2.Route 에서 사용 할 Component 정의
 Vue.use(VueRouter);
@@ -31,9 +32,9 @@ const routes = [
     component: Chart,
   },
   {
-    path: "/cate",
-    name: "Cate",
-    component: Cate,
+    path: "/users",
+    name: "UserAccounts",
+    component: Users,
   },
   {
     path: "/account",
