@@ -97,7 +97,7 @@ export default {
     menuItems() {
       return this.items.filter((i) => {
         if (i.text === "Users") {
-          if (this.$store.state.auth.status.isAdmin) {
+          if (this.$store.state.auth.status.isAdmin == true) {
             return i;
           }
         } else {

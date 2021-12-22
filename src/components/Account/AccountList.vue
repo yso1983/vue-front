@@ -7,7 +7,7 @@
     :items-per-page="15"
     item-key="id"
     :loading="loading"
-    class="elevation-1 ml-3 mr-3"
+    class="elevation-1 ml-3 mr-3 pa-2"
     @click:row="handleClick"
   >
     <template v-slot:[`item.amount`]="{ item }">

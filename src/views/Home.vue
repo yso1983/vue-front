@@ -36,6 +36,11 @@ export default {
       items: [],
     };
   },
+  computed: {
+    groupid(){
+      return localStorage.getItem('groupid');
+    },
+  },
   methods: {
     getTotalAmount() {
       AccountService.getAaccounts().then((res) => {
@@ -44,7 +49,7 @@ export default {
           if (!(data && data.length > 0)) return;
 
           this.items.push({
-            title: "총 자산",
+            title: "총 금액",
             number: this.getCurrency(
               data.reduce((previousValue, currentValue) => {
                 return {
@@ -58,8 +63,10 @@ export default {
             tIconColor: "success",
             bIcon: "mdi-cash-multiple",
             bIconColor: "success",
-            bText: "각자 소돈비 제외",
+            bText: this.groupid == 1 ? "소돈비 제외" : "교회 잔액",
           });
+
+          if(this.groupid != 1) return;
 
           let nhAccount = data.filter((acc) => acc.name.indexOf("농협") > -1);
           if (nhAccount && nhAccount.length > 0) {

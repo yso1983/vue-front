@@ -1,5 +1,5 @@
 <template>
-  <v-card id="dnw_form" class="mx-auto text-center" app>
+  <v-card id="dnw_form" class="mx-auto text-center pa-2" app>
     <validation-observer ref="observer" v-slot="{ invalid }">
       <form @submit.prevent="submit()">
         <input type="hidden" v-model="detail.id" />
@@ -104,31 +104,40 @@
             </validation-provider>
           </v-col>
           <v-col cols="12" md="11" sm="10">
-           <validation-provider v-slot="{ errors }" name="금액" rules="required">
-            <v-text-field
-              v-model="detail.amount"
-              :error-messages="errors"
-              label="금액"
-              type="currency"
-              step=".1"
-              required
-              @keyup="onBlurNumber"
+            <validation-provider
+              v-slot="{ errors }"
+              name="금액"
+              rules="required"
+            >
+              <v-text-field
+                v-model="detail.amount"
+                :error-messages="errors"
+                label="금액"
+                type="currency"
+                step=".1"
+                required
+                @keyup="onBlurNumber"
               ></v-text-field>
             </validation-provider>
           </v-col>
         </v-row>
-       
-        <validation-provider v-slot="{ errors }" name="select_to_accounts" >
+
+        <validation-provider
+          v-slot="{ errors }"
+          name="select_to_accounts"
+          v-if="groupid != 3"
+        >
           <v-select
-              v-model="detail.to_account_id"
-              :items="toAccounts"
-              item-text="name"
-              item-value="id"
-              :error-messages="errors"
-              label="받을 계좌 선택하세요!"
-              data-vv-name="select_to_accounts"
-              clearable
-            ></v-select>
+            v-if="groupid != 3"
+            v-model="detail.to_account_id"
+            :items="toAccounts"
+            item-text="name"
+            item-value="id"
+            :error-messages="errors"
+            label="받을 계좌 선택하세요!"
+            data-vv-name="select_to_accounts"
+            clearable
+          ></v-select>
         </validation-provider>
         <v-textarea
           solo
@@ -206,10 +215,10 @@ export default {
       .toISOString()
       .substr(0, 10),
     menu2: false,
-    kind: null, 
+    kind: null,
     kinds: [
-      {id: -1, name: "출금"},
-      {id: 1, name: "입금"}
+      { id: -1, name: "출금" },
+      { id: 1, name: "입금" },
     ],
   }),
   computed: {
@@ -217,14 +226,17 @@ export default {
     detail() {
       return this.$store.state.dnw.detail;
     },
+    groupid() {
+      return localStorage.getItem("groupid");
+    },
   },
-  watch:{
+  watch: {
     kind: function () {
       this.onBlurNumber();
-    }
+    },
   },
   methods: {
-    initialize(){
+    initialize() {
       this.getUsers();
       this.getAccounts();
       this.getItems();
@@ -236,7 +248,9 @@ export default {
           if (res) {
             if (res.data.code === "0000") {
               this.clear();
-              this.$parent.$children.filter(x => x.$el.id == 'dnw_list')[0].getDetails();
+              this.$parent.$children
+                .filter((x) => x.$el.id == "dnw_list")[0]
+                .getDetails();
             }
           } else alert("실패");
         })
@@ -248,7 +262,16 @@ export default {
       this.kind = null;
       this.$store.dispatch(
         "dnw/changeDetail",
-        new dnwDetail(0, 0, 0, this.$store.state.auth.user.id, null, this.date, "", 0)
+        new dnwDetail(
+          0,
+          0,
+          0,
+          this.$store.state.auth.user.id,
+          null,
+          this.date,
+          "",
+          0
+        )
       );
       this.$refs.observer.reset();
     },
@@ -260,11 +283,12 @@ export default {
       });
     },
     getAccounts() {
-      AccountService.getAaccounts()
-      .then((res) => {
+      AccountService.getAaccounts().then((res) => {
         if (res.data && res.data.code === "0000") {
           this.toAccounts = res.data.data;
-          this.accounts = this.toAccounts.filter(a => a.user_id == this.$store.state.auth.user.id);
+          this.accounts = this.toAccounts.filter(
+            (a) => a.user_id == this.$store.state.auth.user.id
+          );
         }
       });
     },
@@ -293,10 +317,11 @@ export default {
       this.getAccounts();
     },
 
-    onBlurNumber(){
-      if(this.detail.amount){
-        let kind = parseFloat(this.kind??1);
-        let amount =  "" + kind * parseFloat(this.detail.amount.replace(/\D/g, ""));
+    onBlurNumber() {
+      if (this.detail.amount) {
+        let kind = parseFloat(this.kind ?? 1);
+        let amount =
+          "" + kind * parseFloat(this.detail.amount.replace(/\D/g, ""));
 
         const result = amount.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
         this.detail.amount = result;

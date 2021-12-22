@@ -3,12 +3,9 @@
     :headers="headers"
     :items="user_accounts"
     sort-by="calories"
-    class="elevation-1"
+    class="elevation-1 pa-2"
     :search="search"
   >
-    <template v-slot:[`item.amount`]="{ item }">
-      <span>{{ item.amount | makeComma }}</span>
-    </template>
     <template v-slot:top>
       <v-toolbar flat>
         <v-toolbar-title>그룹</v-toolbar-title>
@@ -19,18 +16,17 @@
           v-model="groupId"
           @change="getUsersByGroup($event)"
           clearable
-          class="mx-4"
+          class="mx-3"
         ></v-select>
         <v-text-field
           v-model="search"
           label="Search"
-          class="mx-4"
+          class="mx-3"
         ></v-text-field>
-        <v-divider class="mx-4" inset vertical></v-divider>
-        <v-spacer></v-spacer>
+        <v-divider class="mx-3" inset vertical></v-divider>
         <v-dialog v-model="dialog" max-width="500px">
           <template v-slot:activator="{ on, attrs }">
-            <v-btn color="primary" dark class="mb-2" v-bind="attrs" v-on="on">
+            <v-btn color="primary" dark class="mb-2 mt-2" v-bind="attrs" v-on="on">
               New
             </v-btn>
           </template>
@@ -363,13 +359,6 @@ export default {
           this.user_accounts = res.data.data;
         }
       });
-    },
-
-    onBlurNumber() {
-      const result = this.editedItem.amount
-        .replace(/,/g, "")
-        .replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-      this.editedItem.amount = result;
     },
   },
 };
