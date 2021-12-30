@@ -100,6 +100,10 @@ export default {
           if (this.$store.state.auth.status.isAdmin == true) {
             return i;
           }
+        } else if(i.text === "Automatic D&W"){
+          if (localStorage.getItem("groupid") != "3") {
+            return i;
+          }
         } else {
           return i;
         }

@@ -125,10 +125,9 @@
         <validation-provider
           v-slot="{ errors }"
           name="select_to_accounts"
-          v-if="groupid != 3"
         >
           <v-select
-            v-if="groupid != 3"
+            
             v-model="detail.to_account_id"
             :items="toAccounts"
             item-text="name"

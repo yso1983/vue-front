@@ -12,6 +12,7 @@
             :error-messages="errors"
             data-vv-name="select"
             required
+            disabled
           ></v-select>
         </validation-provider>
         <validation-provider
