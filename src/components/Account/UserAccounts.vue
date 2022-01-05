@@ -51,7 +51,7 @@
                           chips
                         ></v-combobox>
                       </v-col>
-                      <v-col cols="12" sm="6" md="4">
+                      <v-col cols="12" sm="6" md="6">
                         <validation-provider
                           v-slot="{ errors }"
                           name="email"
@@ -68,7 +68,7 @@
                           ></v-text-field>
                         </validation-provider>
                       </v-col>
-                      <v-col cols="12" sm="6" md="4">
+                      <v-col cols="12" sm="6" md="6">
                         <validation-provider
                           v-slot="{ errors }"
                           name="계정"
@@ -84,7 +84,7 @@
                           ></v-text-field>
                         </validation-provider>
                       </v-col>
-                      <v-col cols="12" sm="6" md="4">
+                      <v-col cols="12" sm="6" md="6">
                         <validation-provider
                           v-slot="{ errors }"
                           name="사용자명"
@@ -106,6 +106,17 @@
                           hide-details
                           label="정지 여부"
                         ></v-switch>
+                      </v-col>
+                      <v-col cols="12" sm="12" md="12">
+                        <v-combobox
+                          v-model="editedItem.roles"
+                          :items="roles"
+                          item-text="name"
+                          item-value="id"
+                          label="권한"
+                          multiple
+                          chips
+                        ></v-combobox>
                       </v-col>
                     </v-row>
                   </v-container>
@@ -211,6 +222,7 @@ export default {
     editedIndex: -1,
     editedItem: {},
     groups: [],
+    roles: [],
     groupId: "",
     sso_types: ["KAKAO"],
     locked: false,
@@ -221,6 +233,7 @@ export default {
       email: "",
       account_locked: "N",
       groups: [],
+      roles: [],
     },
     disabled: false,
   }),
@@ -252,10 +265,14 @@ export default {
     initialize() {
       this.editedItem = this.defaultItem;
       this.getGroups();
+      this.roles.push({id: 1, name: "user"});
+      this.roles.push({id: 2, name: "moderator"});
+      this.roles.push({id: 3, name: "admin"});
       this.getUsersByGroup();
     },
 
     editItem(item) {
+      console.log(item);
       this.disabled = true;
       this.locked = item.account_locked == "Y" ? true : false;
       //this.editedIndex = this.automatics.indexOf(item);
@@ -307,6 +324,7 @@ export default {
     save() {
       let item = this.editedItem;
       let groups = [];
+      let roles = [];
 
       item.groups.forEach((e) => {
         groups.push(e.id);
@@ -317,6 +335,14 @@ export default {
         return;
       }
 
+      item.roles.forEach((e) => {
+        roles.push(e.id);
+      });
+
+      if (!roles || roles.length < 1) {
+        this.$store.dispatch("global/OPEN_DIALOG", "권한을 선택하세요!");
+        return;
+      }
       this.$refs.observer.validate();
 
       let params = {
@@ -326,6 +352,7 @@ export default {
         email: item.email,
         account_locked: this.locked ? "Y" : "N",
         groups: groups,
+        roles: roles,
       };
 
       this.$store
