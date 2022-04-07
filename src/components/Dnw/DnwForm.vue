@@ -258,13 +258,15 @@ export default {
         });
     },
     clear() {
+      //console.log("=-------------==", this.$store.state.dnw.items[0]?.id);
+
       this.kind = null;
       this.$store.dispatch(
         "dnw/changeDetail",
         new dnwDetail(
           0,
           0,
-          0,
+          this.$store.state.dnw.items[0]?.id,
           this.$store.state.auth.user.id,
           null,
           this.date,
@@ -296,15 +298,22 @@ export default {
         .dispatch("dnw/items")
         .then(
           (res) => {
-            if (res.code === "3100") {
-              this.$store.dispatch("auth/logout");
-              this.$router.push({ name: "LoginPage" });
-            }
-
+            //console.log("===================", res);
             if (res.code === "0000") {
-              // if (res.data)
-              //   this.$store.dispatch("dnw/setDetail", res.data);
-            }
+              this.$store.dispatch(
+                "dnw/changeDetail",
+                new dnwDetail(
+                  0,
+                  0,
+                  this.$store.state.dnw.items[0]?.id,
+                  this.$store.state.auth.user.id,
+                  null,
+                  this.date,
+                  "",
+                  0
+                )
+              );
+            } 
           },
           (error) => {
             alert(error.message);
@@ -322,7 +331,7 @@ export default {
         let amount =
           "" + kind * parseFloat(this.detail.amount.replace(/\D/g, ""));
 
-        const result = amount.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        const result = amount.replace(/\D/g, "") == "" ? 0 : amount.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
         this.detail.amount = result;
       }
     },

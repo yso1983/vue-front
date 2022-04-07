@@ -10,6 +10,7 @@ import AutoDnw from "../views/AutomaticDnw";
 import Profile from "../views/UserProfile";
 import Group from "../views/SelectGroup";
 import Users from "../views/Users";
+import Lotto from "../views/Lotto";
 
 //2.Route 에서 사용 할 Component 정의
 Vue.use(VueRouter);
@@ -61,6 +62,11 @@ const routes = [
     name: "Group",
     component: Group,
   },
+  {
+    path: "/lotto",
+    name: "Lotto",
+    component: Lotto,
+  },
   
   { path: "*", redirect: "/home" },
 ];
@@ -73,7 +79,7 @@ let router = new VueRouter({
 });
 
 router.beforeEach((to, from, next) => {
-  const publicPages = ['/login', '/register'];
+  const publicPages = ['/login', '/register', '/lotto'];
   const authRequired = !publicPages.includes(to.path);
   const loggedIn = localStorage.getItem('user');
 

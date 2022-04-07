@@ -82,6 +82,12 @@ export default {
         pagePath: "./automaricDnw",
       },
       {
+        icon: "mdi-numeric-5-circle-outline",
+        text: "Lotto",
+        title: "Lotto",
+        pagePath: "./lotto",
+      },
+      {
         icon: "mdi-account-multiple",
         text: "Users",
         title: "User Accounts",
@@ -96,7 +102,7 @@ export default {
     },
     menuItems() {
       return this.items.filter((i) => {
-        if (i.text === "Users") {
+        if (i.text === "Users" || i.text === "Lotto") {
           if (this.$store.state.auth.status.isAdmin == true) {
             return i;
           }

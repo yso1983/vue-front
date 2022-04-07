@@ -58,7 +58,7 @@ export default {
     },
   },
   mounted() {
-    if(!this.$route.path.includes('login')){
+    if(this.checkLogin()){
       if (this.currentUser) {
         this.$store
           .dispatch("auth/check")
@@ -90,5 +90,10 @@ export default {
       }
     }
   },
+  checkLogin() {
+    if(!this.$route.path.includes('login')){
+      return true;
+    }
+  }
 };
 </script>

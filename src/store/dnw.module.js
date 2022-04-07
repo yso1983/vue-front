@@ -80,7 +80,9 @@ export const dnw = {
           dnw_item_name: obj.dnw_item.name,
           remark: obj.remark,
           amount: obj.amount,
-          standard_dt: obj.standard_dt
+          standard_dt: obj.standard_dt,
+          std_account_amount: obj.std_account_amount,
+          latest_account_amount: obj.latest_account_amount
         };
       });
     },
