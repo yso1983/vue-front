@@ -104,10 +104,7 @@
       </template>
       <template v-slot:[`item.amount`]="{ item }">
         <span>{{ item.amount | makeComma }}</span>
-      </template>
-      <template v-slot:[`item.std_account_amount`]="{ item }">
-        <span>{{ item.std_account_amount | makeComma }}</span>
-      </template>
+      </template>≈
       <template v-slot:[`item.latest_account_amount`]="{ item }">
         <span>{{ item.latest_account_amount | makeComma }}</span>
       </template>
@@ -133,7 +130,6 @@ export default {
       { text: "지출항목", value: "dnw_item_name" },
       { text: "지출액", value: "amount" },
       { text: "지출일자", value: "standard_dt" },
-      { text: "지출전금액", value: "std_account_amount" },
       { text: "지출후금액", value: "latest_account_amount" },
       { text: "비고", value: "remark" },
     ],
