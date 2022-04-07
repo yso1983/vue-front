@@ -165,6 +165,18 @@ export default {
               this.loading = false;
               //this.dwnitems = res.data;
             }
+            else if (res.code === "3100"){
+              this.$store.dispatch("auth/refresh")
+              .then(
+                () => {
+                  this.getDetails();
+                },
+                (error) => {
+                  this.$store.dispatch("auth/logout");
+                  this.$router.push({ name: "LoginPage" });
+                }
+              );
+            }
           },
           (error) => {
             alert(error.message);

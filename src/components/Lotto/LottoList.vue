@@ -42,12 +42,12 @@ export default {
       this.loading = true;
       service.getLottoList()
       .then((res) => {
-
         if (res.data && res.data.code === "0000") {
-          this.loading = false;
           this.list = res.data.data;
         }
-      });
+        this.loading = false;
+      })
+      .catch((e) => this.loading = false);
     },
   },
   created() {

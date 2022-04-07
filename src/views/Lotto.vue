@@ -6,7 +6,9 @@
       </v-col>
     </v-row>
     <v-row>
-    <List />
+      <v-col cols="12" md="12" sm="12">
+        <List />
+      </v-col>
     </v-row>
   </div>
 </template>

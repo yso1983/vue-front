@@ -1,7 +1,7 @@
 <template>
   <v-card fluid width="100%" 
     lass="elevation-1 ml-3 mr-3 pa-2">
-    <v-card-title>
+    <v-card-title class="ml-10">
       랜덤추출
     </v-card-title>
     
@@ -11,6 +11,7 @@
       sort-by="seq"
       class="elevation-1 pa-2"
       disable-sort="true"
+      :loading="loading"
     >
       <template v-slot:top>
         <v-toolbar flat class="">
@@ -62,6 +63,7 @@ import service from "../../services/lotto.service";
 export default {
   name: "lottoRandom",
   data: () => ({
+    loading: false,
     numbers: [],
     num: 5,
     headers: [
@@ -93,7 +95,7 @@ export default {
           "0보타 큰 수를 입력하세요."
         );
       }
-
+      this.loading = true;
       service.getRandomNumbers(this.num).then((r) => {
         if(r.data && r.data.code === "0000"){
           this.numbers = [];
@@ -108,7 +110,9 @@ export default {
             });
           });
         }
-      });
+
+        this.loading = false;
+      }).catch((e) => this.loading = false);
     }, 
     setSync (){
       service.setLatestSync().then((r) => {

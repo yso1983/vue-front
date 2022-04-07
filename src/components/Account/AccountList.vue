@@ -53,10 +53,24 @@ export default {
       .then((res) => {
 
         if (res.data && res.data.code === "0000") {
-          this.loading = false;
           this.$store.dispatch("global/CHANGE_ACCOUNT_LIST", res.data.data);
         }
-      });
+        else if (res.data && res.data.code === "3100"){
+          this.$store.dispatch("auth/refresh")
+          .then(
+            () => {
+              this.read();
+            },
+            (error) => {
+              this.$store.dispatch("auth/logout");
+              this.$router.push({ name: "LoginPage" });
+            }
+          );
+        }
+
+        this.loading = false;
+      })
+      .catch((e) => this.loading = false);
     },
   },
   created() {
