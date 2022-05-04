@@ -7,6 +7,14 @@ import router from "./router/router";
 import axios from "axios";
 import moment from 'moment';
 
+import * as VueGoogleMaps from 'vue2-google-maps';
+
+import VueLodash from 'vue-lodash';
+import lodash from 'lodash';
+ 
+// name is optional
+Vue.use(VueLodash, { name: 'custom' , lodash: lodash });
+
 if(process.env.NODE_ENV === 'production'){
   // baseURL 기본값을 정의한다
   axios.defaults.baseURL = process.env.VUE_APP_API_SERVER_URL;
@@ -37,8 +45,17 @@ Vue.filter('formatDate', function(value) {
   }
 });
 
-window.Kakao.init("565e654ade3f6c2feff20186fcfed108");
+window.Kakao.init(process.env.VUE_APP_KAKAO_JS_KEY);
 
+// @see https://www.npmjs.com/package/vue2-google-maps
+Vue.use(VueGoogleMaps, {
+    load: {
+        key: process.env.VUE_APP_GOOGLEMAP_KEY,
+        // This is required to use the Autocomplete plugin
+        libraries: 'places', // 'places,drawing,visualization'
+    },
+});
+ 
 new Vue({
   vuetify,
   router: router,

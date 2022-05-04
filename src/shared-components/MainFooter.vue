@@ -7,22 +7,14 @@
       color="primary"
       horizontal
     >
-      <v-btn>
-        <span>Recents</span>
+      <v-btn
+        v-for="item in items"
+        :key="item.text"
+        @click="itemOnClick(item.text)"
+      >
+        <span>{{item.text}}</span>
 
-        <v-icon>mdi-history</v-icon>
-      </v-btn>
-
-      <v-btn>
-        <span>Favorites</span>
-
-        <v-icon>mdi-heart</v-icon>
-      </v-btn>
-
-      <v-btn>
-        <span>Nearby</span>
-
-        <v-icon>mdi-map-marker</v-icon>
+        <v-icon>{{item.icon}}</v-icon>
       </v-btn>
     </v-bottom-navigation>
   </v-footer>
@@ -31,6 +23,27 @@
 <script>
   export default {
     name: "main-footer",
-    data: () => ({ value: 1 })
+    data: () => ({ 
+      items: [
+        {
+          icon: "mdi-table-cog",
+          text: "Account",
+        },
+        {
+          icon: "mdi-monitor-edit",
+          text: "D&W",
+        },
+        {
+          icon: "mdi-map-marker",
+          text: "Nearby",
+        },
+      ]
+    }),
+    methods: {
+      itemOnClick(text) {
+        this.$store.state.global.subtitle = text;
+        this.$router.push({ name: text }).catch(()=>{});
+      },
+    },
   };
 </script>

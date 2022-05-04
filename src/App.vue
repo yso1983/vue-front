@@ -11,7 +11,7 @@
       </v-container>
       <message-dialog />
     </v-main>
-    <main-footer v-if="false" />
+    <main-footer v-if="currentUser && selectedGroup" />
   </v-app>
 </template>
 <style>
@@ -56,6 +56,11 @@ export default {
       this.$store.dispatch("auth/logout");
       this.$router.push({ name: "LoginPage" });
     },
+    checkLogin() {
+      if(!this.$route.path.includes('login')){
+        return true;
+      }
+    }
   },
   mounted() {
     if(this.checkLogin()){
@@ -88,11 +93,6 @@ export default {
       } else {
         this.$router.push({ name: "LoginPage" });
       }
-    }
-  },
-  checkLogin() {
-    if(!this.$route.path.includes('login')){
-      return true;
     }
   }
 };

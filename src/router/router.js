@@ -11,6 +11,7 @@ import Profile from "../views/UserProfile";
 import Group from "../views/SelectGroup";
 import Users from "../views/Users";
 import Lotto from "../views/Lotto";
+import GMap from "../views/GMap";
 
 //2.Route 에서 사용 할 Component 정의
 Vue.use(VueRouter);
@@ -67,6 +68,12 @@ const routes = [
     name: "Lotto",
     component: Lotto,
   },
+  {
+    path: "/gmap",
+    name: "Nearby",
+    component: GMap,
+  },
+  
   
   { path: "*", redirect: "/home" },
 ];
