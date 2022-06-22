@@ -82,6 +82,12 @@ export default {
         pagePath: "./automaricDnw",
       },
       {
+        icon: "mdi-note-edit-outline",
+        text: "Memo",
+        title: "Memo",
+        pagePath: "./note",
+      },
+      {
         icon: "mdi-numeric-5-circle-outline",
         text: "Lotto",
         title: "Lotto",

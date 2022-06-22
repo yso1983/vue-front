@@ -12,6 +12,7 @@ import Group from "../views/SelectGroup";
 import Users from "../views/Users";
 import Lotto from "../views/Lotto";
 import GMap from "../views/GMap";
+import Note from "../views/Note";
 
 //2.Route 에서 사용 할 Component 정의
 Vue.use(VueRouter);
@@ -73,8 +74,11 @@ const routes = [
     name: "Nearby",
     component: GMap,
   },
-  
-  
+  {
+    path: "/note",
+    name: "Note",
+    component: Note,
+  },
   { path: "*", redirect: "/home" },
 ];
 

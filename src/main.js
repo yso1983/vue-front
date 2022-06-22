@@ -45,6 +45,15 @@ Vue.filter('formatDate', function(value) {
   }
 });
 
+Vue.filter('strSortData', function(value) {
+  if (value && value.length > 20) {
+    return value.substr(0, 20) + "...";
+  } else {
+    return value ?? "";
+  }
+});
+
+
 window.Kakao.init(process.env.VUE_APP_KAKAO_JS_KEY);
 
 // @see https://www.npmjs.com/package/vue2-google-maps
