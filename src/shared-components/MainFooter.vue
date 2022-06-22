@@ -33,9 +33,13 @@
           icon: "mdi-monitor-edit",
           text: "D&W",
         },
+        // {
+        //   icon: "mdi-map-marker",
+        //   text: "Nearby",
+        // },
         {
-          icon: "mdi-map-marker",
-          text: "Nearby",
+          icon: "mdi-note-edit-outline",
+          text: "Note",
         },
       ]
     }),

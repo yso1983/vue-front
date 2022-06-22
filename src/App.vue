@@ -57,7 +57,7 @@ export default {
       this.$router.push({ name: "LoginPage" });
     },
     checkLogin() {
-      if(!this.$route.path.includes('login')){
+      if(!this.$route.path.includes('login') && !this.$route.path.includes('lotto')){
         return true;
       }
     }
