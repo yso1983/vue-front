@@ -124,7 +124,7 @@ export default {
     dialogDelete: false,
     search: '',
     headers: [
-      { text: "메모", value: "remark" },
+      { text: "내용", value: "remark" },
       { text: "수정일자", value: "created_dt" },
       { text: "수정", value: "actions", sortable: false },
     ],
@@ -135,7 +135,8 @@ export default {
     locked: false,
     defaultItem: {
       id: 0,
-      remark: "",
+      remark: "",;ㅔ
+      
       user_yn: "Y"
     },
     disabled: false,
