@@ -98,10 +98,10 @@
       </v-toolbar>
     </template>
     <template v-slot:[`item.remark`]="{ item }">
-      <span>{{ item.remark | strSortData }}</span>
+      <span @click="editItem(item)">{{ item.remark | strSortData }}</span>
     </template>
     <template v-slot:[`item.created_dt`]="{ item }">
-      <span>{{ item.created_dt | formatDate }}</span>
+      <span @click="editItem(item)">{{ item.created_dt | formatDate }}</span>
     </template>
     <template v-slot:[`item.actions`]="{ item }">
       <v-icon small class="mr-2" @click="editItem(item)"> mdi-pencil </v-icon>
