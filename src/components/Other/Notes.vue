@@ -105,7 +105,8 @@
     </template>
     <template v-slot:[`item.actions`]="{ item }">
       <v-icon small class="mr-2" @click="editItem(item)"> mdi-pencil </v-icon>
-      <v-icon small @click="deleteItem(item)"> mdi-delete </v-icon>
+      <v-icon small class="mr-2" @click="deleteItem(item)"> mdi-delete </v-icon>
+      <v-icon small @click="sendMail(item)"> mdi-send </v-icon>
     </template>
     <!-- <template v-slot:no-data>
       <v-btn color="primary" @click="initialize"> Reset </v-btn>
@@ -135,8 +136,7 @@ export default {
     locked: false,
     defaultItem: {
       id: 0,
-      remark: "",;ㅔ
-      
+      remark: "",
       user_yn: "Y"
     },
     disabled: false,
@@ -250,6 +250,9 @@ export default {
         .catch((err) => {
           alert(err.message);
         });
+    },
+    sendMail(item){
+      this.$store.dispatch("global/OPEN_NOTE_MAIL", item.id);
     }
   },
 };

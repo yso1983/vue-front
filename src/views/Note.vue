@@ -5,16 +5,19 @@
         <Notes />
       </v-col>
     </v-row>
+    <MailPop />
   </div>
 </template>
 
 <script>
 import Notes from "../components/Other/Notes.vue";
+import MailPop from "./MailPop.vue";
 
 export default {
   name: "content-notes",
   components: {
-    Notes: Notes
+    Notes: Notes,
+    MailPop: MailPop
   },
 };
 </script>

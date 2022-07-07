@@ -14,8 +14,8 @@
 				</v-card-text>
 				<v-card-actions class="justify-end">
 					<v-btn
-						text
-						color="green darken-1"
+            depressed
+						color="primary"
 						@click="confirm"
 					>확인</v-btn>
 				</v-card-actions>
