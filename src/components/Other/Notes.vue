@@ -262,7 +262,6 @@ export default {
         maxPickableCount: 10,
         minPickableCount: 1,
         success: (response) => {
-          console.log(response);
           window.Kakao.API.request({
             url: '/v1/api/talk/friends/message/default/send',
             data: {
@@ -277,11 +276,9 @@ export default {
               },
             },
             success: (res) => {
-              //alert('success: ' + JSON.stringify(res));
               this.$store.dispatch("global/OPEN_DIALOG", "메시지 발송 했습니다.");
             },
             fail: (err) => {
-              //alert('error: ' + JSON.stringify(err));
               this.$store.dispatch("global/OPEN_DIALOG", JSON.stringify(err));
             },
           });
