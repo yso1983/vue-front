@@ -252,13 +252,14 @@ export default {
         });
     },
     sendMail(item){
+      //console.log(location, this.$route);
       this.sendKakaoMsg(item);
       //this.$store.dispatch("global/OPEN_NOTE_MAIL", item.id);
     },
     sendKakaoMsg(item){
       // 팝업 방식
       window.Kakao.Picker.selectFriends({
-        title: '친구 선택',
+        title: '발송 대상 선택',
         maxPickableCount: 10,
         minPickableCount: 1,
         success: (response) => {
@@ -270,8 +271,8 @@ export default {
                 object_type: 'text',
                 text: item.remark,
                 link: {
-                  web_url: 'https://yso1983.cf/#/note',
-                  mobile_web_url: 'https://yso1983.cf/#/note',
+                  web_url: location.href,
+                  mobile_web_url: location.href,
                 },
               },
             },
