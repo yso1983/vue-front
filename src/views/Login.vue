@@ -123,7 +123,7 @@ export default {
     kakaoLogin() {
       // console.log(window.Kakao);
       window.Kakao.Auth.login({
-        scope: "account_email, profile_nickname",
+        scope: "account_email, profile_nickname, friends",
         success: this.GetMe,
       });
     },

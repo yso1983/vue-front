@@ -104,9 +104,9 @@
       <span @click="editItem(item)">{{ item.created_dt | formatDate }}</span>
     </template>
     <template v-slot:[`item.actions`]="{ item }">
-      <v-icon small class="mr-2" @click="editItem(item)"> mdi-pencil </v-icon>
-      <v-icon small class="mr-2" @click="deleteItem(item)"> mdi-delete </v-icon>
-      <v-icon small @click="sendMail(item)"> mdi-send </v-icon>
+      <v-icon dense class="mr-5" @click="sendMail(item)"> mdi-send </v-icon>
+      <!-- <v-icon small class="mr-2" @click="editItem(item)"> mdi-pencil </v-icon> -->
+      <v-icon dense @click="deleteItem(item)"> mdi-delete </v-icon>
     </template>
     <!-- <template v-slot:no-data>
       <v-btn color="primary" @click="initialize"> Reset </v-btn>
@@ -252,7 +252,70 @@ export default {
         });
     },
     sendMail(item){
-      this.$store.dispatch("global/OPEN_NOTE_MAIL", item.id);
+      this.sendKakaoMsg(item);
+      //this.$store.dispatch("global/OPEN_NOTE_MAIL", item.id);
+    },
+    sendKakaoMsg(item){
+      // 팝업 방식
+      window.Kakao.Picker.selectFriends({
+        title: '친구 선택',
+        maxPickableCount: 10,
+        minPickableCount: 1,
+        success: (response) => {
+          console.log(response);
+          window.Kakao.API.request({
+            url: '/v1/api/talk/friends/message/default/send',
+            data: {
+              receiver_uuids: response.users.map(obj => obj.uuid),
+              template_object: {
+                object_type: 'text',
+                text: item.remark,
+                link: {
+                  web_url: 'https://yso1983.cf/#/note',
+                  mobile_web_url: 'https://yso1983.cf/#/note',
+                },
+              },
+            },
+            success: (res) => {
+              //alert('success: ' + JSON.stringify(res));
+              this.$store.dispatch("global/OPEN_DIALOG", "메시지 발송 했습니다.");
+            },
+            fail: (err) => {
+              //alert('error: ' + JSON.stringify(err));
+              this.$store.dispatch("global/OPEN_DIALOG", JSON.stringify(err));
+            },
+          });
+        },
+        fail: (error) => {
+          this.$store.dispatch("global/OPEN_DIALOG", JSON.stringify(error));
+        },
+      });
+
+      // window.Kakao.API.request({
+      //   url: '/v1/api/talk/friends',
+      //   data: {friend_order: 'favorite'},
+      //   success: function(response) {
+      //     alert(response.total_count);
+      //     console.log("성공", response);
+          
+      //     
+      //   },
+      //   fail: function(error) {
+      //     alert(error);
+      //     console.log(error);
+      //   }
+
+      // window.Kakao.Auth.login({
+      //   scope: 'talk_message,friends',
+      //   success: function() {
+          
+      //     });
+
+      //   },
+      //   fail: function(err) {
+      //     alert('failed to login: ' + JSON.stringify(err));
+      //   },
+      // });
     }
   },
 };
